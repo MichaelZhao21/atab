@@ -1,6 +1,18 @@
-# Getting Started with Create React App
+# Task Tab!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[WIP!!!] This is an extension that will replace your new tab into a more productive and useful interface! The main feature is a todo list, stored on YOUR choice of storage platform: Google Drive, Dropbox, MongoDB, etc! For now, the main focus is for a Firefox extension, but once deployed, I hope to expand to Chrome too :)
+
+> This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Installation
+
+Simply type `yarn install` to install :)
+
+## Execution
+
+To test it, just type `yarn start` and it will open in your browser :DDD
+
+To build and deploy the extension, type `yarn build` and zip the files in `build/`.
 
 ## Available Scripts
 
