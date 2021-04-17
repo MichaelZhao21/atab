@@ -1,0 +1,5 @@
+.news {
+    width: calc(100% - 1.5vw);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
