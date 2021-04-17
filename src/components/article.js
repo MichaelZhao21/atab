@@ -5,7 +5,7 @@ class Article extends React.Component {
     pad = (n) => (n < 10 ? `0${n}` : n);
 
     openArticle = () => {
-        window.open(this.props.url, '_blank');
+        window.open(this.props.url, '_self');
     };
 
     render() {
