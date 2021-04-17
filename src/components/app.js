@@ -4,6 +4,7 @@ import News from './news';
 import Time from './time';
 
 import './app.css';
+import Popup from './popup';
 
 const BACKEND = 'http://localhost:8080';
 const USER = 'michael';
@@ -11,8 +12,21 @@ const USER = 'michael';
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { todo: null, news: [] };
+        this.state = { todo: null, news: [], popupOpen: true, popupId: 0, popupData: null };
     }
+
+    /**
+     * Opens the popup
+     * @param {number} id The ID of the popup to open
+     * @param {object} data The data to send to the popup
+     */
+    openPopup = (id, data) => {
+        this.setState({ popupOpen: true, popupId: id, popupData: data });
+    };
+
+    closePopup = () => {
+        this.setState({ popupOpen: false, popupId: 0 });
+    };
 
     async componentDidMount() {
         const todo = await fetch(`${BACKEND}/todo/${USER}`).then((d) => d.json());
@@ -23,6 +37,12 @@ class App extends React.Component {
     render() {
         return (
             <div className="app">
+                <Popup
+                    open={this.state.popupOpen}
+                    id={this.state.popupId}
+                    data={this.state.popupData}
+                    openPopup={this.openPopup}
+                    closePopup={this.closePopup}></Popup>
                 <div className="app-vert">
                     <Todo className="app-left section" data={this.state.todo}></Todo>
                     <div className="app-right">

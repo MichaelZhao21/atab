@@ -1,0 +1,35 @@
+.popup {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+.popup.open {
+    display: block;
+}
+
+.popup-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.popup-button {
+    margin: 0 0.5rem;
+    border: 1px solid white;
+    background-color: transparent;
+
+    font-family: 'Inconsolata', monospace;
+    font-weight: 500;
+    font-size: 1rem;
+    text-align: center;
+    color: white;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.popup-button:hover {
+    background-color: #777777;
+}
