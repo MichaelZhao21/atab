@@ -7,12 +7,18 @@ import './app.css';
 import Popup from './popup';
 
 const BACKEND = 'http://localhost:8080';
-const USER = 'michael';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { todo: null, news: null, popupOpen: false, popupId: 0, popupData: null };
+        this.state = {
+            todo: null,
+            news: null,
+            tags: null,
+            popupOpen: false,
+            popupId: 0,
+            popupData: null,
+        };
     }
 
     /**
@@ -29,12 +35,16 @@ class App extends React.Component {
     };
 
     async componentDidMount() {
-        fetch(`${BACKEND}/todo/${USER}`).then(async (d) => {
+        fetch(`${BACKEND}/todo`).then(async (d) => {
             this.setState({ todo: await d.json() });
         });
         fetch(`${BACKEND}/news`).then(async (d) => {
             const newsData = await d.json();
             this.setState({ news: newsData.results });
+        });
+        fetch(`${BACKEND}/todo/settings`).then(async (d) => {
+            const settings = await d.json();
+            this.setState({ tags: settings.tags });
         });
     }
 
