@@ -12,7 +12,7 @@ const USER = 'michael';
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { todo: null, news: [], popupOpen: true, popupId: 0, popupData: null };
+        this.state = { todo: null, news: null, popupOpen: false, popupId: 0, popupData: null };
     }
 
     /**
@@ -29,9 +29,13 @@ class App extends React.Component {
     };
 
     async componentDidMount() {
-        const todo = await fetch(`${BACKEND}/todo/${USER}`).then((d) => d.json());
-        const news = await fetch(`${BACKEND}/news`).then((d) => d.json());
-        this.setState({ todo, news: news.results });
+        fetch(`${BACKEND}/todo/${USER}`).then(async (d) => {
+            this.setState({ todo: await d.json() });
+        });
+        fetch(`${BACKEND}/news`).then(async (d) => {
+            const newsData = await d.json();
+            this.setState({ news: newsData.results });
+        });
     }
 
     render() {

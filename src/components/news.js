@@ -18,6 +18,7 @@ class News extends React.Component {
     };
 
     render() {
+        if (this.props.data === null) return <div className={this.props.className}>Loading...</div>;
         const articleList = this.createArticleList();
         return <div className={`news ${this.props.className}`}>{articleList}</div>;
     }
