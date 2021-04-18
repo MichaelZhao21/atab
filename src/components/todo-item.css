@@ -1,0 +1,68 @@
+.todo-item-display {
+    display: flex;
+    flex-direction: row;
+}
+
+.todo-divider {
+    padding: 0 0.4rem;
+}
+
+.todo-text {
+    margin: 0;
+}
+
+.todo-item-dropdown {
+    display: none;
+}
+
+.todo-item-dropdown.show {
+    display: block;
+}
+
+.todo-priority {
+    color: #444;
+}
+
+.todo-priority .p5 {
+    color: #ff7777;
+}
+
+.todo-priority .p4 {
+    color: #ffa592;
+}
+
+.todo-priority .p3 {
+    color: #fff492;
+}
+
+.todo-priority .p2 {
+    color: #bcff2d;
+}
+
+.todo-priority .p1 {
+    color: #92ff8f;
+}
+
+.todo-due {
+    color: #777;
+}
+
+.todo-due.urgent-1 {
+    color: #8eff49;
+}
+
+.todo-due.urgent-2 {
+    color: #fcff6b;
+}
+
+.todo-due.urgent-3 {
+    color: #ffb992;
+}
+
+.todo-due.urgent-4 {
+    color: #ff523a;
+}
+
+.todo-due.urgent-5 {
+    color: #b00000;
+}
