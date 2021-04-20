@@ -40,7 +40,9 @@ class TodoItem extends React.Component {
 
         let tagString = '';
         this.props.data.tags.forEach((t) => {
-            tagString += this.props.tags.find((f) => f.char === t).text + ', ';
+            let tag = this.props.tags.find((f) => f.char === t);
+            tag = (tag === undefined) ? '[INVALID TAG]' : tag.text;
+            tagString += tag + ', ';
         });
         return tagString.slice(0, -2);
     };
@@ -84,7 +86,11 @@ class TodoItem extends React.Component {
                     <p className="todo-text todo-name">{this.props.data.name}</p>
                 </div>
                 <div className={`todo-item-dropdown ${showDropdown}`}>
-                    <div className="todo-item-arrow">{'>'}</div>
+                    <div
+                        className="todo-item-arrow"
+                        onClick={this.props.openPopup.bind(this, 1, this.props.data)}>
+                        {'>'}
+                    </div>
                     <div className="todo-item-dropdown-right">
                         <p className="todo-item-title">{this.props.data.name}</p>
                         <p className="todo-item-tags">

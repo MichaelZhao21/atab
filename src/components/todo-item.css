@@ -44,6 +44,7 @@
 
 .todo-item-arrow {
     margin: 0 0.75rem 0 0.25rem;
+    cursor: pointer;
 }
 
 .todo-item-title {
@@ -62,6 +63,7 @@
 .todo-item-description {
     margin: 0.1rem 0 0;
     font-size: 0.8rem;
+    white-space: pre;
     color: #aaa;
 }
 

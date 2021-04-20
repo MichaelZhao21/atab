@@ -49,18 +49,32 @@ class Popup extends React.Component {
     saveButton = async () => {
         this.setState({ disabled: true });
 
+        // Calculate due date
         let due = 0;
         if (this.state.dueM !== '' && this.state.dueD !== '' && this.state.dueY !== '')
             due = dayjs(`${this.state.dueM}/${this.state.dueD}/${this.state.dueY}`, 'M/D/YYYY')
                 .startOf('day')
                 .valueOf();
 
+        // Format tags
+        let tagSplit = this.state.tags.split('');
+        let tagsParsed = [];
+        tagSplit.forEach((t) => {
+            if (
+                t.toLowerCase().match(/[a-z]/i) &&
+                this.props.tags.find((i) => i.char === t.toUpperCase()) !== undefined &&
+                tagsParsed.indexOf(t.toUpperCase()) === -1
+            ) {
+                tagsParsed.push(t.toUpperCase());
+            }
+        });
+
         const data = {
             name: this.state.name,
             due,
             priority: this.state.priority,
             description: this.state.description,
-            tags: this.state.tags.split(''),
+            tags: tagsParsed,
         };
 
         if (this.state.id === '') {
@@ -70,18 +84,23 @@ class Popup extends React.Component {
                 headers: { 'Content-Type': 'application/json' },
             });
         } else {
+            await fetch(`${BACKEND}/todo/${this.state.id}`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: { 'Content-Type': 'application/json' },
+            });
         }
 
         window.location.reload();
     };
 
-    resetState = (id, name, dueM, dueD, dueY, priority, description, tags) => {
+    resetState = (id, name, due, priority, description, tags) => {
         this.setState({
             id: id || '',
             name: name || '',
-            dueM: dueM ? dayjs(dueM).format('MM') : '',
-            dueD: dueD ? dayjs(dueD).format('DD') : '',
-            dueY: dueY ? dayjs(dueY).format('YYYY') : '',
+            dueM: due ? dayjs(due).format('MM') : '',
+            dueD: due ? dayjs(due).format('DD') : '',
+            dueY: due ? dayjs(due).format('YYYY') : '',
             priority: priority || 1,
             description: description || '',
             tags: tags ? tags.join(' ') : '',
@@ -95,9 +114,7 @@ class Popup extends React.Component {
                 this.resetState(
                     this.props.data._id,
                     this.props.data.name,
-                    this.props.data.dueM,
-                    this.props.data.dueD,
-                    this.props.data.dueY,
+                    this.props.data.due,
                     this.props.data.priority,
                     this.props.data.description,
                     this.props.data.tags
