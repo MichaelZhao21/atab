@@ -7,11 +7,13 @@ class Todo extends React.Component {
         super(props);
         this.state = { sortingMethod: 'PRIORITY' };
     }
+
     render() {
         if (this.props.data === null) return <div className={this.props.className}>Loading...</div>;
         const todoList = this.props.data.map((d, i) => (
-            <TodoItem data={d} key={`${i}-${d.name}`}></TodoItem>
+            <TodoItem data={d} key={`${i}-${d.name}`} tags={this.props.tags}></TodoItem>
         ));
+
         return (
             <div className={`todo ${this.props.className}`}>
                 <div className="todo-button-list">

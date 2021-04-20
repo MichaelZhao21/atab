@@ -47,3 +47,4 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 * Create and host a dedicated backend, seperate from my own API (this will be a server folder in this repo)
 * Add the ability for users to store in google drive, dropbox, etc
 * Add instructions on how to self-host the backend
+* Add an option to don't load data unless focus on the page (default new tab is on taskbar)

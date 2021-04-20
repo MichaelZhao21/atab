@@ -58,7 +58,7 @@ class App extends React.Component {
                     openPopup={this.openPopup}
                     closePopup={this.closePopup}></Popup>
                 <div className="app-vert">
-                    <Todo className="app-left section" data={this.state.todo}></Todo>
+                    <Todo className="app-left section" data={this.state.todo} tags={this.state.tags}></Todo>
                     <div className="app-right">
                         <Time className="app-time section"></Time>
                         <News className="app-news section" data={this.state.news}></News>

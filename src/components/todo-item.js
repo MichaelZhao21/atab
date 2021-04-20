@@ -5,14 +5,14 @@ import './todo-item.css';
 class TodoItem extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { show: false };
+        this.state = { dropdown: false };
     }
+
     // 0 for non-existent, 1 for > month, 2 for > week, 3 for > day, 4 for same day, 5 for OVERDUE!
     calcDueDateUrgency = () => {
         if (this.props.data.due === 0) return 0;
 
         const diff = this.props.data.due - new dayjs().startOf('day').subtract(1, 'day').valueOf();
-        console.log(diff);
         if (diff < 0) return 5;
         else if (diff > 2629800000) return 1;
         else if (diff > 604800000) return 2;
@@ -31,14 +31,30 @@ class TodoItem extends React.Component {
         return `<span class="p${stars}">${'*'.repeat(stars)}</span>${'*'.repeat(grey)}`;
     };
 
+    toggleDropdown = () => {
+        this.setState({ dropdown: !this.state.dropdown });
+    };
+
+    createTagList = () => {
+        if (this.props.tags === undefined || this.props.tags === null) return 'ERROR';
+
+        let tagString = '';
+        this.props.data.tags.forEach((t) => {
+            tagString += this.props.tags.find((f) => f.char === t).text + ', ';
+        });
+        return tagString.slice(0, -2);
+    };
+
     render() {
         const dueDateUrgency = this.calcDueDateUrgency();
         const formattedDueDate = this.formatDueDate();
         const priorityStars = this.createPriorityStars();
-        const showDropdown = this.state.show ? 'show' : '';
+        const tagList = this.createTagList();
+        const showDropdown = this.state.dropdown ? 'show' : '';
+
         return (
             <div className="todo-item">
-                <div className="todo-item-display">
+                <div className="todo-item-display" onClick={this.toggleDropdown}>
                     <p
                         className="todo-text todo-priority"
                         dangerouslySetInnerHTML={{ __html: priorityStars }}></p>
@@ -67,7 +83,17 @@ class TodoItem extends React.Component {
                     <div className="todo-divider">|</div>
                     <p className="todo-text todo-name">{this.props.data.name}</p>
                 </div>
-                <div className={`todo-item-dropdown ${showDropdown}`}>hi</div>
+                <div className={`todo-item-dropdown ${showDropdown}`}>
+                    <div className="todo-item-arrow">{'>'}</div>
+                    <div className="todo-item-dropdown-right">
+                        <p className="todo-item-title">{this.props.data.name}</p>
+                        <p className="todo-item-tags">
+                            <span className="todo-item-tags-label">Tags:&nbsp;</span>
+                            {tagList}
+                        </p>
+                        <p className="todo-item-description">{this.props.data.description}</p>
+                    </div>
+                </div>
             </div>
         );
     }

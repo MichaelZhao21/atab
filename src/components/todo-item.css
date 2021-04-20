@@ -1,6 +1,7 @@
 .todo-item-display {
     display: flex;
     flex-direction: row;
+    cursor: pointer;
 }
 
 .todo-divider {
@@ -11,12 +12,44 @@
     margin: 0;
 }
 
+.todo-name {
+    width: 39vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .todo-item-dropdown {
     display: none;
+    flex-direction: row;
+    margin: 0.5rem 0;
 }
 
 .todo-item-dropdown.show {
-    display: block;
+    display: flex;
+}
+
+.todo-item-arrow {
+    margin: 0 0.75rem 0 0.25rem;
+}
+
+.todo-item-title {
+    margin: 0;
+}
+
+.todo-item-tags {
+    margin: 0.1rem 0 0;
+    font-size: 0.8rem;
+}
+
+.todo-item-tags-label {
+    color: #ffc329;
+}
+
+.todo-item-description {
+    margin: 0.1rem 0 0;
+    font-size: 0.8rem;
+    color: #aaa;
 }
 
 .todo-priority {
