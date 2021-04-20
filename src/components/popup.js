@@ -49,6 +49,24 @@ class Popup extends React.Component {
     saveButton = async () => {
         this.setState({ disabled: true });
 
+        // Submit edit tags
+        if (this.props.id === 2) {
+            const rawTagList = this.state.tags.split('\n');
+            const tagList = rawTagList.map((t) => {
+                let tSplit = t.split(' ');
+                if (tSplit.length < 2 || tSplit[0].length !== 1) return null;
+                return { char: tSplit[0], text: tSplit.slice(1).join(' ') };
+            });
+            const finalList = tagList.filter((t) => t !== null);
+            await fetch(`${BACKEND}/todo/settings`, {
+                method: 'POST',
+                body: JSON.stringify({ tags: finalList }),
+                headers: { 'Content-Type': 'application/json' },
+            });
+            window.location.reload();
+            return;
+        }
+
         // Calculate due date
         let due = 0;
         if (this.state.dueM !== '' && this.state.dueD !== '' && this.state.dueY !== '')
@@ -107,9 +125,17 @@ class Popup extends React.Component {
         });
     };
 
+    createEditTagList = () => {
+        return this.props.tags.reduce((out, val) => {
+            return (out += `${val.char} ${val.text}\n`);
+        }, '');
+    };
+
     componentDidUpdate(prevProps) {
         if (this.props.open !== prevProps.open && this.props.open) {
-            if (this.props.data === null) this.resetState();
+            if (this.props.id === 2) {
+                this.setState({ tags: this.createEditTagList() });
+            } else if (this.props.data === null) this.resetState();
             else
                 this.resetState(
                     this.props.data._id,
@@ -213,7 +239,14 @@ class Popup extends React.Component {
                 </div>
 
                 {/* Edit tags section */}
-                <div className={`popup-inner edit-tags ${tagsPopup}`}></div>
+                <div className={`popup-inner edit-tags ${tagsPopup}`}>
+                    <h1 className="edit-tags-title">Edit Tags</h1>
+                    <textarea
+                        name="tags"
+                        className="edit-tags-input"
+                        value={this.state.tags}
+                        onChange={this.handleInputChange}></textarea>
+                </div>
 
                 {/* Save */}
                 <div className="popup-button-container">

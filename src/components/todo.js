@@ -34,7 +34,11 @@ class Todo extends React.Component {
                         onClick={this.props.openPopup.bind(this, 1, null)}>
                         ADD TASK
                     </button>
-                    <button className="todo-button edit-tags">EDIT TAGS</button>
+                    <button
+                        className="todo-button edit-tags"
+                        onClick={this.props.openPopup.bind(this, 2, null)}>
+                        EDIT TAGS
+                    </button>
                 </div>
                 <div className="todo-list">{todoList}</div>
             </div>

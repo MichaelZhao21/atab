@@ -44,8 +44,8 @@
 }
 
 label {
-    color: #ffc329;
     margin-right: 0.5rem;
+    color: #ffc329;
 }
 
 input,
@@ -112,12 +112,27 @@ input[type='number'] {
 .tags-list {
     margin: 0 0 0.5rem 2.5rem;
     font-size: 0.85rem;
-    color: rgb(255, 245, 189);
+    color: #fff5bd;
+    cursor: pointer;
+}
+
+textarea {
+    padding: 0.25rem;
+    border: 1px solid white;
 }
 
 .description-input {
     width: 43vw;
     height: 4rem;
     margin-top: 0.25rem;
-    border: 1px solid white;
+}
+
+.edit-tags-title {
+    margin: 0.5rem 0 1rem;
+    text-align: center;
+}
+
+.edit-tags-input {
+    width: 25vw;
+    height: 20rem;
 }
