@@ -17,6 +17,7 @@ class News extends React.Component {
         });
     };
 
+    // TODO: Add NYT attribution: "Data provided by The New York Times"
     render() {
         if (this.props.data === null) return <div className={this.props.className}>Loading...</div>;
         const articleList = this.createArticleList();

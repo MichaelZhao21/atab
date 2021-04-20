@@ -11,7 +11,11 @@ class Todo extends React.Component {
     render() {
         if (this.props.data === null) return <div className={this.props.className}>Loading...</div>;
         const todoList = this.props.data.map((d, i) => (
-            <TodoItem data={d} key={`${i}-${d.name}`} tags={this.props.tags}></TodoItem>
+            <TodoItem
+                data={d}
+                key={`${i}-${d.name}`}
+                tags={this.props.tags}
+                openPopup={this.props.openPopup}></TodoItem>
         ));
 
         return (
@@ -25,7 +29,11 @@ class Todo extends React.Component {
                         <span className="todo-task-count">TASKS&nbsp;</span>
                         {this.props.data.length.toString().padStart(5, '0')}
                     </button>
-                    <button className="todo-button add-task">ADD TASK</button>
+                    <button
+                        className="todo-button add-task"
+                        onClick={this.props.openPopup.bind(this, 1, null)}>
+                        ADD TASK
+                    </button>
                     <button className="todo-button edit-tags">EDIT TAGS</button>
                 </div>
                 <div className="todo-list">{todoList}</div>

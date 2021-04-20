@@ -1,7 +1,21 @@
+/* Define colors */
+.todo-item {
+    --p6: #b00000;
+    --p5: #ff7777;
+    --p4: #ffa592;
+    --p3: #fff492;
+    --p2: #bcff2d;
+    --p1: #92ff8f;
+}
+
 .todo-item-display {
     display: flex;
     flex-direction: row;
     cursor: pointer;
+}
+
+.todo-due {
+    flex-shrink: 0;
 }
 
 .todo-divider {
@@ -13,7 +27,6 @@
 }
 
 .todo-name {
-    width: 39vw;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -57,23 +70,23 @@
 }
 
 .todo-priority .p5 {
-    color: #ff7777;
+    color: var(--p5);
 }
 
 .todo-priority .p4 {
-    color: #ffa592;
+    color: var(--p4);
 }
 
 .todo-priority .p3 {
-    color: #fff492;
+    color: var(--p3);
 }
 
 .todo-priority .p2 {
-    color: #bcff2d;
+    color: var(--p2);
 }
 
 .todo-priority .p1 {
-    color: #92ff8f;
+    color: var(--p1);
 }
 
 .todo-due {
@@ -81,21 +94,21 @@
 }
 
 .todo-due.urgent-1 {
-    color: #8eff49;
+    color: var(--p2);
 }
 
 .todo-due.urgent-2 {
-    color: #fcff6b;
+    color: var(--p3);
 }
 
 .todo-due.urgent-3 {
-    color: #ffb992;
+    color: var(--p4);
 }
 
 .todo-due.urgent-4 {
-    color: #ff523a;
+    color: var(--p5);
 }
 
 .todo-due.urgent-5 {
-    color: #b00000;
+    color: var(--p6);
 }

@@ -1,4 +1,5 @@
 .popup {
+    padding: 1vw;
     position: fixed;
     left: 50%;
     top: 50%;
@@ -32,4 +33,91 @@
 
 .popup-button:hover {
     background-color: #777777;
+}
+
+.popup-inner {
+    display: none;
+}
+
+.popup-inner.open {
+    display: block;
+}
+
+label {
+    color: #ffc329;
+    margin-right: 0.5rem;
+}
+
+input,
+textarea {
+    margin-bottom: 0.25rem;
+    border: none;
+    border-bottom: 1px solid white;
+
+    font-size: 1rem;
+    font-family: 'Inconsolata', monospace;
+    color: white;
+    background-color: transparent;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+.name-input {
+    width: 40vw;
+}
+
+.date-input {
+    width: 1rem;
+}
+
+.date-input.year {
+    width: 2rem;
+}
+
+.date-divider {
+    margin: 0 0.25rem;
+    display: inline;
+}
+
+.date-today {
+    margin-right: 0.5rem;
+    border: 1 solid white;
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+}
+
+#priority-label {
+    margin-left: 1.5rem;
+}
+
+.priority-input {
+    width: 0.5rem;
+}
+
+.tags-input {
+    width: 30vw;
+}
+
+.tags-list {
+    margin: 0 0 0.5rem 2.5rem;
+    font-size: 0.85rem;
+    color: rgb(255, 245, 189);
+}
+
+.description-input {
+    width: 43vw;
+    height: 4rem;
+    margin-top: 0.25rem;
+    border: 1px solid white;
 }

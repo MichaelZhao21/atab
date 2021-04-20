@@ -55,10 +55,15 @@ class App extends React.Component {
                     open={this.state.popupOpen}
                     id={this.state.popupId}
                     data={this.state.popupData}
+                    tags={this.state.tags}
                     openPopup={this.openPopup}
                     closePopup={this.closePopup}></Popup>
                 <div className="app-vert">
-                    <Todo className="app-left section" data={this.state.todo} tags={this.state.tags}></Todo>
+                    <Todo
+                        className="app-left section"
+                        data={this.state.todo}
+                        tags={this.state.tags}
+                        openPopup={this.openPopup}></Todo>
                     <div className="app-right">
                         <Time className="app-time section"></Time>
                         <News className="app-news section" data={this.state.news}></News>
