@@ -6,8 +6,6 @@ import Time from './time';
 import './app.css';
 import Popup from './popup';
 
-const BACKEND = 'http://localhost:8080';
-
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -18,6 +16,7 @@ class App extends React.Component {
             popupOpen: false,
             popupId: 0,
             popupData: null,
+            backend: null,
         };
     }
 
@@ -35,14 +34,17 @@ class App extends React.Component {
     };
 
     async componentDidMount() {
-        fetch(`${BACKEND}/todo`).then(async (d) => {
+        const backend = 'http://localhost:8080/';
+        this.setState({ backend });
+
+        fetch(`${backend}/todo`).then(async (d) => {
             this.setState({ todo: await d.json() });
         });
-        fetch(`${BACKEND}/news`).then(async (d) => {
+        fetch(`${backend}/news`).then(async (d) => {
             const newsData = await d.json();
             this.setState({ news: newsData.results });
         });
-        fetch(`${BACKEND}/todo/settings`).then(async (d) => {
+        fetch(`${backend}/todo/settings`).then(async (d) => {
             const settings = await d.json();
             this.setState({ tags: settings.tags });
         });
@@ -57,7 +59,8 @@ class App extends React.Component {
                     data={this.state.popupData}
                     tags={this.state.tags}
                     openPopup={this.openPopup}
-                    closePopup={this.closePopup}></Popup>
+                    closePopup={this.closePopup}
+                    backend={this.state.backend}></Popup>
                 <div className="app-vert">
                     <Todo
                         className="app-left section"

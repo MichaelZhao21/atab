@@ -4,7 +4,6 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import './popup.css';
 
 dayjs.extend(customParseFormat);
-const BACKEND = 'http://localhost:8080';
 
 class Popup extends React.Component {
     constructor(props) {
@@ -58,7 +57,7 @@ class Popup extends React.Component {
                 return { char: tSplit[0], text: tSplit.slice(1).join(' ') };
             });
             const finalList = tagList.filter((t) => t !== null);
-            await fetch(`${BACKEND}/todo/settings`, {
+            await fetch(`${this.props.backend}/todo/settings`, {
                 method: 'POST',
                 body: JSON.stringify({ tags: finalList }),
                 headers: { 'Content-Type': 'application/json' },
@@ -96,13 +95,13 @@ class Popup extends React.Component {
         };
 
         if (this.state.id === '') {
-            await fetch(`${BACKEND}/todo`, {
+            await fetch(`${this.props.backend}/todo`, {
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: { 'Content-Type': 'application/json' },
             });
         } else {
-            await fetch(`${BACKEND}/todo/${this.state.id}`, {
+            await fetch(`${this.props.backend}/todo/${this.state.id}`, {
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: { 'Content-Type': 'application/json' },
