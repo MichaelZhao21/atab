@@ -1,20 +1,20 @@
 {
     "manifest_version": 2,
     "name": "Task Tab",
-    "version": 1.0,
+    "version": "1.0",
     "author": "Michael Zhao",
     "description": "An extension that will replace your new tab into a more productive and useful interface!",
     
     "icons": {
-        "48": "48.png",
-        "96": "96.png"
+        "48": "res/48.png",
+        "96": "res/96.png"
     },
 
     "chrome_settings_overrides": {
-		"homepage": "index.html"
+		"homepage": "src/index.html"
 	},
 	"chrome_url_overrides": {
-		"newtab": "index.html"
+		"newtab": "src/index.html"
 	},
 
     "options_ui": {
