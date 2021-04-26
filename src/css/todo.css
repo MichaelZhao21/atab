@@ -95,13 +95,8 @@
 }
 
 .todo-item-dropdown {
-    display: none;
     flex-direction: row;
     margin: 0.5rem 0;
-}
-
-.todo-item-dropdown.show {
-    display: flex;
 }
 
 .todo-item-arrow {

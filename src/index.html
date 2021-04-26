@@ -25,7 +25,26 @@
         <div class="app">
             <div class="popup"></div>
             <div class="app-vert">
-                <div class="todo app-left section"></div>
+                <div class="todo app-left section">
+
+                    <div class="todo-button-list">
+                        <button class="todo-button sort">
+                            <span class="todo-sort">SORT</span>
+                            <span class="todo-sort-method" id="sorting">PRIORITY</span>
+                        </button>
+                        <button class="todo-button task-count">
+                            <span class="todo-task-count">TASKS</span>
+                            <span class="todo-task-count-number" id="task-count">00000</span>
+                        </button>
+                        <button class="todo-button add-task" id="add-task">
+                            ADD TASK
+                        </button>
+                        <button class="todo-button edit-tags" id="edit-tags">
+                            EDIT TAGS
+                        </button>
+                    </div>
+                    <div class="todo-list">Loading...</div>
+                </div>
                 <div class="time section">
                     <p class="time-time">00:00:00 am</p>
                     <p class="time-date"></p>
