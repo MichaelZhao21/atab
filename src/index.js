@@ -46,6 +46,7 @@ function setTime(time, date) {
 
 function writeNews(news) {
     let articleList = $('.news');
+    articleList.empty();
     news.forEach((n, i) => {
         let subtitle = n.abstract;
         if (subtitle === '') subtitle = n.byline;
