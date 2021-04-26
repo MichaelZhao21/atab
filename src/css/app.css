@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&display=swap');
+
+html, body {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-size: 24px;
+}
+
+.app {
+    width: calc(100% - 1.5vw);
+    height: calc(100% - 1.5vw);
+    padding: 0.75vw;
+    background-image: linear-gradient(#9574ff, #b003ef);
+    font-family: 'Inconsolata', monospace;
+    font-weight: 500;
+}
+
+.section {
+    padding: 0.75vw;
+    background-color: #303030;
+    border: 1px solid white;
+    color: white;
+}
+
+.app-vert {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 67fr 33fr;
+    grid-template-rows: 20fr 80fr;
+    column-gap: 0.75vw;
+    row-gap: 0.75vw;
+}
+
+.todo {
+    grid-row-start: 1;
+    grid-row-end: 3;
+}
+
+.time {
+    grid-row-start: 1;
+    grid-row-end: 2;
+}

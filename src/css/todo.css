@@ -1,0 +1,178 @@
+.todo {
+    padding: 1vw;
+    overflow-y: auto;
+}
+
+.todo-button-list {
+    height: 1.25rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.todo-button {
+    padding: 0;
+    margin-right: 2rem;
+    border: none;
+    border-bottom: 3px solid white;
+
+    font-family: 'Inconsolata', monospace;
+    font-size: 1rem;
+    background-color: transparent;
+    color: white;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.todo-button:hover {
+    border-top: 3px solid;
+}
+
+.todo-button.sort {
+    border-color: #abff41;
+}
+
+.todo-sort {
+    color: #abff41;
+}
+
+.todo-button.task-count {
+    border-color: #f795ff;
+}
+
+.todo-task-count {
+    color: #f795ff;
+}
+
+.todo-button.add-task {
+    border-color: #45ff63;
+    color: #45ff63;
+}
+
+.todo-button.edit-tags {
+    border-color: #b4b7fa;
+    color: #b4b7fa;
+}
+
+.todo-list .todo-item:nth-last-child(1) {
+    margin-bottom: 0.5rem;
+}
+
+/* Define colors */
+.todo-item {
+    --p6: #b00000;
+    --p5: #ff7777;
+    --p4: #ffa592;
+    --p3: #fff492;
+    --p2: #bcff2d;
+    --p1: #92ff8f;
+}
+
+.todo-item-display {
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+}
+
+.todo-due {
+    flex-shrink: 0;
+}
+
+.todo-divider {
+    padding: 0 0.4rem;
+}
+
+.todo-text {
+    margin: 0;
+}
+
+.todo-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.todo-item-dropdown {
+    display: none;
+    flex-direction: row;
+    margin: 0.5rem 0;
+}
+
+.todo-item-dropdown.show {
+    display: flex;
+}
+
+.todo-item-arrow {
+    margin: 0 0.75rem 0 0.25rem;
+    cursor: pointer;
+}
+
+.todo-item-title {
+    margin: 0;
+}
+
+.todo-item-tags {
+    margin: 0.1rem 0 0;
+    font-size: 0.8rem;
+}
+
+.todo-item-tags-label {
+    color: #ffc329;
+}
+
+.todo-item-description {
+    margin: 0.1rem 0 0;
+    font-size: 0.8rem;
+    white-space: pre;
+    color: #aaa;
+}
+
+.todo-priority {
+    color: #444;
+}
+
+.todo-priority .p5 {
+    color: var(--p5);
+}
+
+.todo-priority .p4 {
+    color: var(--p4);
+}
+
+.todo-priority .p3 {
+    color: var(--p3);
+}
+
+.todo-priority .p2 {
+    color: var(--p2);
+}
+
+.todo-priority .p1 {
+    color: var(--p1);
+}
+
+.todo-due {
+    color: #777;
+}
+
+.todo-due.urgent-1 {
+    color: var(--p2);
+}
+
+.todo-due.urgent-2 {
+    color: var(--p3);
+}
+
+.todo-due.urgent-3 {
+    color: var(--p4);
+}
+
+.todo-due.urgent-4 {
+    color: var(--p5);
+}
+
+.todo-due.urgent-5 {
+    color: var(--p6);
+}
