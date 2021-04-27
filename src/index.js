@@ -25,6 +25,7 @@ $(document).ready(async function () {
     $('#cancel-popup').click(closePopup);
     $('#save-popup').click(savePopup);
     $('#tags-list').click(toggleTags);
+    $('#today-button').click(setToday);
 });
 
 /* DATE AND TIME SECTION */
@@ -162,9 +163,11 @@ function openPopup(id, data = null) {
     if (id === 1 && data !== null) {
         $('#edit-id').text(data._id);
         $('#edit-name').val(data.name);
-        $('#edit-m').val(dayjs(data.due).format('MM'));
-        $('#edit-d').val(dayjs(data.due).format('DD'));
-        $('#edit-y').val(dayjs(data.due).format('YYYY'));
+        if (data.due !== 0) {
+            $('#edit-m').val(dayjs(data.due).format('MM'));
+            $('#edit-d').val(dayjs(data.due).format('DD'));
+            $('#edit-y').val(dayjs(data.due).format('YYYY'));
+        }
         $('#edit-priority').val(data.priority);
         $('#edit-tags').val(data.tags.join(' '));
         $('#edit-description').val(data.description);
@@ -289,4 +292,10 @@ function createEditTagList() {
     return window.tags.reduce((out, val) => {
         return (out += `${val.char} ${val.text}\n`);
     }, '');
+}
+
+function setToday() {
+    $('#edit-m').val(dayjs().format('MM'));
+    $('#edit-d').val(dayjs().format('DD'));
+    $('#edit-y').val(dayjs().format('YYYY'));
 }
