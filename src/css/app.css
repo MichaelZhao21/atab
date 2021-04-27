@@ -8,18 +8,23 @@ html, body {
     font-size: 24px;
 }
 
+body {
+    --back-top: #9574ff;
+    --back-bottom: #b003ef;
+}
+
 .app {
     width: calc(100% - 1.5vw);
     height: calc(100% - 1.5vw);
     padding: 0.75vw;
-    background-image: linear-gradient(#9574ff, #b003ef);
+    background-image: linear-gradient(var(--back-top), var(--back-bottom));
     font-family: 'Inconsolata', monospace;
     font-weight: 500;
 }
 
 .section {
     padding: 0.75vw;
-    background-color: #303030;
+    background-color: #303030ee;
     border: 1px solid white;
     color: white;
 }

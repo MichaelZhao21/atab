@@ -6,6 +6,7 @@ $(document).ready(async function () {
         const todo = await d.json();
         const tags = await fetch(`${backend}/todo/settings`).then(async (d) => {
             const settings = await d.json();
+            window.tags = settings.tags;
             return settings.tags;
         });
         writeTodo(todo, tags);
@@ -20,7 +21,11 @@ $(document).ready(async function () {
     startTime();
 
     $('#add-task').click(openPopup.bind(this, 1, null));
-    $('#edit-tags').click(openPopup.bind(this, 2, null));
+    $('#edit-tags-button').click(openPopup.bind(this, 2, null));
+
+    $('#cancel-popup').click(closePopup);
+    $('#save-popup').click(savePopup);
+    $('#tags-list').click(toggleTags);
 });
 
 /* DATE AND TIME SECTION */
@@ -151,7 +156,61 @@ function toggleDropdown(i) {
 
 /* POPUP SECTION */
 
-function openPopup(id, data) {
-    // TODO: add open popup ability
-    console.log({ id, data });
+function openPopup(id, data = null) {
+    // Set data
+    if (id === 1 && data !== null) {
+        $('#edit-id').text(data._id);
+        $('#edit-name').val(data.name);
+        $('#edit-m').val(dayjs(data.due).format('MM'));
+        $('#edit-d').val(dayjs(data.due).format('DD'));
+        $('#edit-y').val(dayjs(data.due).format('YYYY'));
+        $('#edit-priority').val(data.priority);
+        $('#edit-tags').val(data.tags.join(' '));
+        $('#edit-description').val(data.description);
+    } else if (id === 2) {
+        $('#tags-area').val(createEditTagList());
+    }
+
+    // Set visible
+    let el = $('#edit-todo-popup');
+    if (id === 2) el = $('#edit-tags-popup');
+    el.css('display', 'block');
+    $('.popup').css('display', 'block');
+}
+
+function closePopup() {
+    $('.popup-inner').each(function () {
+        $(this).css('display', 'none');
+    });
+    $('.popup').css('display', 'none');
+    resetValues();
+}
+
+function savePopup() {}
+
+function resetValues() {
+    $('#edit-id').text('');
+    $('#edit-name').val('');
+    $('#edit-m').val('');
+    $('#edit-d').val('');
+    $('#edit-y').val('');
+    $('#edit-priority').val('');
+    $('#edit-tags').val('');
+    $('#edit-description').val('');
+    $('#tags-area').val('');
+}
+
+function toggleTags() {
+    let el = $('#tags-list');
+    if (el.text() === 'Click to show all tags') {
+        el.text(window.tags.map((t) => `[${t.char}] ${t.text}`).join(', '));
+    } else {
+        el.text('Click to show all tags');
+    }
+}
+
+function createEditTagList() {
+    return window.tags.reduce((out, val) => {
+        return (out += `${val.char} ${val.text}\n`);
+    }, '');
 }
