@@ -1,6 +1,6 @@
 $(document).ready(async function () {
-    window.state = {};
     const backend = 'http://localhost:8080';
+    window.backend = backend;
 
     fetch(`${backend}/todo`).then(async (d) => {
         const todo = await d.json();
@@ -14,7 +14,6 @@ $(document).ready(async function () {
     fetch(`${backend}/news`).then(async (d) => {
         const newsData = await d.json();
         const news = newsData.results;
-        window.state.news = news;
         writeNews(news);
     });
 
@@ -102,10 +101,12 @@ function writeTodo(todo, tags) {
         dropdown.append(arrow);
         let info = $(`<div class="todo-item-dropdown-right"></div>`);
         info.append($(`<p class="todo-item-title">${t.name}</p>`));
-        let tagsComponent = $(`<p class="todo-item-tags>`);
-        tagsComponent.append($(`<span class="todo-item-tags-label">Tags:</span>`));
-        tagsComponent.append($(`<span class="todo-item-tags-list">${tagList}</span>`));
-        info.append(tagsComponent);
+        if (tagList.length > 0) {
+            let tagsComponent = $(`<p class="todo-item-tags"></p>`);
+            tagsComponent.append($(`<span class="todo-item-tags-label">Tags:&nbsp;</span>`));
+            tagsComponent.append($(`<span class="todo-item-tags-list">${tagList}</span>`));
+            info.append(tagsComponent);
+        }
         info.append($(`<p class="todo-item-description">${t.description}</p>`));
         dropdown.append(info);
         todoItem.append(dropdown);
@@ -186,7 +187,82 @@ function closePopup() {
     resetValues();
 }
 
-function savePopup() {}
+async function savePopup() {
+    // Disable submit button
+    $('#save-popup').prop('disabled', true);
+
+    // Get type of popup
+    const popupId = $('#edit-todo-popup').css('display') === 'none' ? 2 : 1;
+
+    // Edit Tags
+    if (popupId === 2) {
+        const tagArea = $('#tags-area').val();
+        const tagList = tagArea.split('\n').map((t) => {
+            let tSplit = t.split(' ');
+            if (tSplit.length < 2 || tSplit[0].length !== 1) return null;
+            return { char: tSplit[0], text: tSplit.slice(1).join(' ') };
+        });
+        const finalList = tagList.filter((t) => t !== null);
+        await fetch(`${window.backend}/todo/settings`, {
+            method: 'POST',
+            body: JSON.stringify({ tags: finalList }),
+            headers: { 'Content-Type': 'application/json' },
+        });
+        window.location.reload();
+        return;
+    }
+
+    // Edit Todo
+    const id = $('#edit-id').text();
+    const name = $('#edit-name').val();
+    const m = $('#edit-m').val();
+    const d = $('#edit-d').val();
+    const y = $('#edit-y').val();
+    const priority = $('#edit-priority').val();
+    const rawTags = $('#edit-tags').val();
+    const description = $('#edit-description').val();
+
+    // Calculate due date
+    let due = 0;
+    if (m !== '' && d !== '' && y !== '')
+        due = dayjs(`${m}/${d}/${y}`, 'M/D/YYYY').startOf('day').valueOf();
+
+    // Format tags
+    let tagsParsed = [];
+    rawTags.split('').forEach((t) => {
+        if (
+            t.toLowerCase().match(/[a-z]/i) &&
+            window.tags.find((i) => i.char === t.toUpperCase()) !== undefined &&
+            tagsParsed.indexOf(t.toUpperCase()) === -1
+        ) {
+            tagsParsed.push(t.toUpperCase());
+        }
+    });
+
+    // Create data obj
+    const data = {
+        name,
+        due,
+        priority,
+        description,
+        tags: tagsParsed,
+    };
+
+    if (id === '') {
+        await fetch(`${window.backend}/todo`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 'Content-Type': 'application/json' },
+        });
+    } else {
+        await fetch(`${window.backend}/todo/${id}`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+    window.location.reload();
+}
 
 function resetValues() {
     $('#edit-id').text('');

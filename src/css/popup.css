@@ -35,6 +35,10 @@
     display: none;
 }
 
+#edit-todo-popup {
+    width: 46vw;
+}
+
 label {
     margin-right: 0.5rem;
     color: #ffc329;
@@ -114,7 +118,7 @@ textarea {
 }
 
 .description-input {
-    width: 43vw;
+    width: calc(100% - 1.5vw);
     height: 4rem;
     margin-top: 0.25rem;
 }
