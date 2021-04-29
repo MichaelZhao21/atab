@@ -4,6 +4,24 @@
 
 If you look at earlier versions, (ie. https://github.com/MichaelZhao21/task-tab/tree/5e7bf870bd69cf77ea21d14f06fee18b872cf663), you will see that this was developed with React. Due to complications with web extensions and the complex framework of React, I have decided to convert this to a pure html/css/js project. I will be using some php functions and jquery mainly to access the DOM.
 
+## Installation
+
+There is no need to build the frontend! Simply follow [this guide](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/) to install a temporary add-on.
+
+For the backend, navigate to the `server` folder and run `yarn install`. To test the backend out, simply run `yarn start`!
+
+## Deployment
+
+This app uses a serverless express backend, hosted on an AWS Lambda function. You must install the [serverless cli](https://www.serverless.com/framework/docs/getting-started/) to run the following commands (Easiest way to install is using npm: `npm i -g serverless`). Navigate to the `server` folder and run the following:
+
+```
+serverless
+yarn install
+serverless deploy
+```
+
+Prompts should come up that asks for AWS keys and how to create them. Follow the prompts and simply install the neccessary libraries and deploy it!
+
 ## TODO (future plans and stuff)
 
 * Finish the basic app for personal use (using my own API for now)

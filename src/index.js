@@ -1,5 +1,5 @@
 $(document).ready(async function () {
-    const backend = 'http://localhost:8080';
+    const backend = 'http://api.michaelzhao.xyz';
     window.backend = backend;
 
     fetch(`${backend}/todo`).then(async (d) => {
