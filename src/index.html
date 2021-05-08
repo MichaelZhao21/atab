@@ -17,56 +17,14 @@
         <link rel="stylesheet" href="css/news.css">
         <link rel="stylesheet" href="css/todo.css">
         <link rel="stylesheet" href="css/time.css">
-        <link rel="stylesheet" href="css/popup.css">
 
     </head>
 
     <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
         <div class="app">
-            <div class="popup section">
-                <!-- Edit todo section -->
-                <div id="edit-todo-popup" class="popup-inner">
-                    <div id="edit-id" style="display:none;"></div>
-                    <label for="edit-name">Name</label>
-                    <input id="edit-name" class="name-input" placeholder="Name of task" type="text" autoFocus></input>
-                    <br />
-                    <label for="edit-m">Due</label>
-                    <button class="date-today" id="today-button">Today</button>
-                    <input id="edit-m" class="date-input" placeholder="MM" type="text" maxlength="2"></input>
-                    <div class="date-divider">/</div>
-                    <input id="edit-d" class="date-input" placeholder="DD" type="text" maxlength="2"></input>
-                    <div class="date-divider">/</div>
-                    <input id="edit-y" class="date-input year" placeholder="YYYY" type="text" maxlength="4"></input>
-                    <label for="edit-priority" id="priority-label">Priority</label>
-                    <input id="edit-priority" class="priority-input" placeholder="#" type="number" min="1"
-                        max="5"></input>
-                    <br />
-                    <label for="edit-tags">Tags</label>
-                    <input id="edit-tags" class="tags-input" placeholder="List of tags" type="text"></input>
-                    <br />
-                    <div id="tags-list">Click to show all tags</div>
-                    <label for="edit-description">Description</label>
-                    <br />
-                    <textarea id="edit-description" class="description-input"
-                        placeholder="Enter a description (optional)"></textarea>
-                </div>
-
-                <!-- Edit tags section -->
-                <div id="edit-tags-popup" class="popup-inner">
-                    <h1 class="edit-tags-title">Edit Tags</h1>
-                    <textarea id="tags-area" class="edit-tags-input"></textarea>
-                </div>
-
-                <!-- Save -->
-                <div class="popup-button-container">
-                    <button id="cancel-popup" class="popup-cancel popup-button">Cancel</button>
-                    <button id="save-popup" class="popup-save popup-button">Save</button>
-                </div>
-            </div>
             <div class="app-vert">
                 <div class="todo app-left section">
-
                     <div class="todo-button-list">
                         <button class="todo-button sort">
                             <span class="todo-sort">SORT</span>
@@ -83,7 +41,8 @@
                             EDIT TAGS
                         </button>
                     </div>
-                    <div class="todo-list">Loading...</div>
+                    <div class="todo-list" id="todo"></div>
+                    <input class="todo-cmd" id="cmd" type="text">
                 </div>
                 <div class="time section">
                     <p class="time-time">00:00:00 am</p>

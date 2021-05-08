@@ -1,31 +1,27 @@
+window.state = { tags: null, todo: null, news: null };
+
 $(document).ready(async function () {
     const backend = 'http://api.michaelzhao.xyz';
     window.backend = backend;
 
-    fetch(`${backend}/todo`).then(async (d) => {
-        const todo = await d.json();
-        const tags = await fetch(`${backend}/todo/settings`).then(async (d) => {
-            const settings = await d.json();
-            window.tags = settings.tags;
-            return settings.tags;
-        });
-        writeTodo(todo, tags);
-    });
-    fetch(`${backend}/news`).then(async (d) => {
-        const newsData = await d.json();
-        const news = newsData.results;
-        writeNews(news);
-    });
+    // fetch(`${backend}/todo`).then(async (d) => {
+    //     const todo = await d.json();
+    //     const tags = await fetch(`${backend}/todo/settings`).then(async (d) => {
+    //         const settings = await d.json();
+    //         window.tags = settings.tags;
+    //         return settings.tags;
+    //     });
+    //     writeTodo(todo, tags);
+    // });
+    // fetch(`${backend}/news`).then(async (d) => {
+    //     const newsData = await d.json();
+    //     const news = newsData.results;
+    //     writeNews(news);
+    // });
 
     startTime();
 
-    $('#add-task').click(openPopup.bind(this, 1, null));
-    $('#edit-tags-button').click(openPopup.bind(this, 2, null));
-
-    $('#cancel-popup').click(closePopup);
-    $('#save-popup').click(savePopup);
-    $('#tags-list').click(toggleTags);
-    $('#today-button').click(setToday);
+    $('#cmd').keypress(runCommand);
 });
 
 /* DATE AND TIME SECTION */
@@ -51,10 +47,10 @@ function setTime(time, date) {
 
 /* NEWS SECTION */
 
-function writeNews(news) {
+function writeNews() {
     let articleList = $('.news');
     articleList.empty();
-    news.forEach((n, i) => {
+    window.state.news.forEach((n, i) => {
         let subtitle = n.abstract;
         if (subtitle === '') subtitle = n.byline;
         let article = $(`<a class="article" href="${n.url}"></a>`);
@@ -69,17 +65,89 @@ function writeNews(news) {
 
 /* _TODO SECTION */
 
-function writeTodo(todo, tags) {
-    let todoList = $('.todo-list');
-    todoList.empty();
-    todo.forEach((t, i) => {
+function runCommand(e) {
+    if (e.originalEvent.key.toLowerCase() !== 'enter') return;
+
+    const message = $('#cmd').val();
+    $('#cmd').val('');
+
+    // Split up arguments
+    const rawArgs = message.trim().split(/ +/g);
+
+    // Combine strings
+    let argsWithStrings = [];
+    let quote = '';
+    rawArgs.forEach((r) => {
+        if (r.indexOf('"') === -1) {
+            if (quote === '') argsWithStrings.push(r);
+            else quote += ` ${r}`;
+        } else {
+            if (r.match(/"/g).length === 2) argsWithStrings.push(r.substring(1, r.length - 1));
+            else if (quote === '') quote = r;
+            else {
+                quote += ` ${r}`;
+                argsWithStrings.push(quote.substring(1, quote.length - 1));
+                quote = '';
+            }
+        }
+    });
+
+    // Create options object and arguments list
+    let options = {};
+    let args = [];
+    let op = '';
+    argsWithStrings.forEach((a) => {
+        if (op === '') {
+            if (a.startsWith('-')) op = a;
+            else args.push(a);
+        } else {
+            options[op.substring(1, 2)] = a;
+            op = '';
+        }
+    });
+
+    // Commands: help, list, add, edit, done, delete, tlist, tadd, tdelete, tedit
+    switch (args[0]) {
+        case 'help':
+            help(message, args);
+            break;
+        case 'list':
+            list(message, args);
+            break;
+        default:
+            write(message, `${message}: command not found`);
+            break;
+    }
+}
+
+function write(original, message) {
+    $('#todo').append(`<span class="in-pre">[task-tab]$</span> ${original}<br>${message}<br>`);
+    $('#todo').scrollTop($('#todo').get(0).scrollHeight);
+}
+
+function help(message, args) {
+    if (args.length === 1)
+        write(
+            message,
+            'Commands: help, list, add, edit, done, delete, tlist, tadd, tdelete, tedit<br>Use help [command] to see the help info for a specific command.'
+        );
+    else {
+        if (args[1] === 'help') write(message, 'Help command: Lists out all possible commands.');
+    }
+}
+
+function list(message, args) {
+    if (window.state.todo === null) {
+        write(message, 'No todos found :(');
+        return;
+    }
+
+    window.state.todo.forEach((t, i) => {
         const dueDateUrgency = calcDueDateUrgency(t.due);
         const formattedDueDate = formatDueDate(t.due);
         const priorityStars = createPriorityStars(t.priority);
-        const tagList = createTagList(t.tags, tags);
-        let todoItem = $(`<div class="todo-item"></div>`);
-        let display = $(`<div class="todo-item-display"></div>`);
-        display.append($(`<p class="todo-text todo-priority">${priorityStars}</p>`));
+        const tagList = createTagList(t.tags, window.state.tags);
+        display.append($(priorityStars));
         display.append($(`<div class="todo-divider">|</div>`));
         display.append(
             $(`<p class="todo-text todo-due urgent-${dueDateUrgency}">${formattedDueDate}</p>`)
@@ -134,7 +202,9 @@ function formatDueDate(due) {
 
 function createPriorityStars(priority) {
     const grey = 5 - priority;
-    return `<span class="p${priority}">${'*'.repeat(priority)}</span>${'*'.repeat(grey)}`;
+    return `<span class="p${priority}">${'*'.repeat(
+        priority
+    )}</span><span class="p-grey">${'*'.repeat(grey)}</p>`;
 }
 
 function createTagList(tags, tagList) {
@@ -156,47 +226,7 @@ function toggleDropdown(i) {
     else todoItem.css('display', 'none');
 }
 
-/* POPUP SECTION */
-
-function openPopup(id, data = null) {
-    // Set data
-    if (id === 1 && data !== null) {
-        $('#edit-id').text(data._id);
-        $('#edit-name').val(data.name);
-        if (data.due !== 0) {
-            $('#edit-m').val(dayjs(data.due).format('MM'));
-            $('#edit-d').val(dayjs(data.due).format('DD'));
-            $('#edit-y').val(dayjs(data.due).format('YYYY'));
-        }
-        $('#edit-priority').val(data.priority);
-        $('#edit-tags').val(data.tags.join(' '));
-        $('#edit-description').val(data.description);
-    } else if (id === 2) {
-        $('#tags-area').val(createEditTagList());
-    }
-
-    // Set visible
-    let el = $('#edit-todo-popup');
-    if (id === 2) el = $('#edit-tags-popup');
-    el.css('display', 'block');
-    $('.popup').css('display', 'block');
-}
-
-function closePopup() {
-    $('.popup-inner').each(function () {
-        $(this).css('display', 'none');
-    });
-    $('.popup').css('display', 'none');
-    resetValues();
-}
-
 async function savePopup() {
-    // Disable submit button
-    $('#save-popup').prop('disabled', true);
-
-    // Get type of popup
-    const popupId = $('#edit-todo-popup').css('display') === 'none' ? 2 : 1;
-
     // Edit Tags
     if (popupId === 2) {
         const tagArea = $('#tags-area').val();
@@ -265,37 +295,4 @@ async function savePopup() {
         });
     }
     window.location.reload();
-}
-
-function resetValues() {
-    $('#edit-id').text('');
-    $('#edit-name').val('');
-    $('#edit-m').val('');
-    $('#edit-d').val('');
-    $('#edit-y').val('');
-    $('#edit-priority').val('');
-    $('#edit-tags').val('');
-    $('#edit-description').val('');
-    $('#tags-area').val('');
-}
-
-function toggleTags() {
-    let el = $('#tags-list');
-    if (el.text() === 'Click to show all tags') {
-        el.text(window.tags.map((t) => `[${t.char}] ${t.text}`).join(', '));
-    } else {
-        el.text('Click to show all tags');
-    }
-}
-
-function createEditTagList() {
-    return window.tags.reduce((out, val) => {
-        return (out += `${val.char} ${val.text}\n`);
-    }, '');
-}
-
-function setToday() {
-    $('#edit-m').val(dayjs().format('MM'));
-    $('#edit-d').val(dayjs().format('DD'));
-    $('#edit-y').val(dayjs().format('YYYY'));
 }

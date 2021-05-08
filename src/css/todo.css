@@ -1,11 +1,13 @@
 .todo {
     padding: 1vw;
     overflow-y: auto;
+    position: relative;
+    overflow: hidden;
 }
 
 .todo-button-list {
+    position: absolute;
     height: 1.25rem;
-    margin-bottom: 0.5rem;
     display: flex;
     flex-direction: row;
     align-items: flex-end;
@@ -56,118 +58,56 @@
     color: #b4b7fa;
 }
 
-.todo-list .todo-item:nth-last-child(1) {
-    margin-bottom: 0.5rem;
-}
+/* Task display section */
 
-/* Define colors */
-.todo-item {
-    --p6: #b00000;
-    --p5: #ff7777;
-    --p4: #ffa592;
-    --p3: #fff492;
-    --p2: #bcff2d;
-    --p1: #92ff8f;
-}
+.todo-list {
+    margin-top: 1.75rem;
+    height: calc(100% - 2vw - 2.45rem);
 
-.todo-item-display {
-    display: flex;
-    flex-direction: row;
-    cursor: pointer;
-}
-
-.todo-due {
-    flex-shrink: 0;
-}
-
-.todo-divider {
-    padding: 0 0.4rem;
-}
-
-.todo-text {
-    margin: 0;
-}
-
-.todo-name {
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
-
-.todo-item-dropdown {
-    flex-direction: row;
-    margin: 0.5rem 0;
-}
-
-.todo-item-arrow {
-    margin: 0 0.75rem 0 0.25rem;
-    cursor: pointer;
-}
-
-.todo-item-title {
-    margin: 0;
-}
-
-.todo-item-tags {
-    margin: 0.1rem 0 0;
     font-size: 0.8rem;
+    line-height: 1rem;
 }
 
-.todo-item-tags-label {
-    color: #ffc329;
+.in-pre {
+    color: #83e1ff;
 }
 
-.todo-item-description {
-    margin: 0.1rem 0 0;
-    font-size: 0.8rem;
-    white-space: pre;
-    color: #aaa;
-}
-
-.todo-priority {
-    color: #444;
-}
-
-.todo-priority .p5 {
+.p5 {
     color: var(--p5);
 }
 
-.todo-priority .p4 {
+.p4 {
     color: var(--p4);
 }
 
-.todo-priority .p3 {
+.p3 {
     color: var(--p3);
 }
 
-.todo-priority .p2 {
+.p2 {
     color: var(--p2);
 }
 
-.todo-priority .p1 {
+.p1 {
     color: var(--p1);
 }
 
-.todo-due {
-    color: #777;
-}
+/* Command line input */
 
-.todo-due.urgent-1 {
-    color: var(--p2);
-}
+.todo-cmd {
+    padding: 0.1rem;
+    width: calc(100% - 2vw - 0.25rem);
+    height: 1rem;
+    position: absolute;
+    bottom: 1vw;
 
-.todo-due.urgent-2 {
-    color: var(--p3);
-}
-
-.todo-due.urgent-3 {
-    color: var(--p4);
-}
-
-.todo-due.urgent-4 {
-    color: var(--p5);
-}
-
-.todo-due.urgent-5 {
-    color: var(--p6);
+    border: none;
+    background-color: #aaaaaa44;
+    color: white;
+    font-size: 0.8rem;
+    font-family: 'Inconsolata', monospace;
 }
