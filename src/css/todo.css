@@ -72,6 +72,10 @@
     line-height: 1rem;
 }
 
+.pre {
+    color: #bbb;
+}
+
 .in-pre {
     color: #83e1ff;
 }

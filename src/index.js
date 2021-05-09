@@ -1,24 +1,10 @@
-window.state = { tags: null, todo: null, news: null };
+window.state = { tags: null, todo: null, news: null, count: null };
 
 $(document).ready(async function () {
-    const backend = 'http://api.michaelzhao.xyz';
+    const backend = 'http://localhost:5000';
     window.backend = backend;
 
-    // fetch(`${backend}/todo`).then(async (d) => {
-    //     const todo = await d.json();
-    //     const tags = await fetch(`${backend}/todo/settings`).then(async (d) => {
-    //         const settings = await d.json();
-    //         window.tags = settings.tags;
-    //         return settings.tags;
-    //     });
-    //     writeTodo(todo, tags);
-    // });
-    // fetch(`${backend}/news`).then(async (d) => {
-    //     const newsData = await d.json();
-    //     const news = newsData.results;
-    //     writeNews(news);
-    // });
-
+    sync('sync todo news', ['sync', 'todo', 'news']);
     startTime();
 
     $('#cmd').keypress(runCommand);
@@ -111,6 +97,15 @@ function runCommand(e) {
         case 'help':
             help(message, args);
             break;
+        case 'clear':
+            $('#todo').text('');
+            break;
+        case 'config':
+            config(message, args, options);
+            break;
+        case 'sync':
+            sync(message, args);
+            break;
         case 'list':
             list(message, args);
             break;
@@ -120,8 +115,12 @@ function runCommand(e) {
     }
 }
 
-function write(original, message) {
-    $('#todo').append(`<span class="in-pre">[task-tab]$</span> ${original}<br>${message}<br>`);
+function write(original, message, append = false) {
+    if (append) $('#todo').append(`${message}<br>`);
+    else
+        $('#todo').append(
+            `<span class="in-pre">[task-tab]$</span> <span class="pre">${original}</span><br>${message}<br>`
+        );
     $('#todo').scrollTop($('#todo').get(0).scrollHeight);
 }
 
@@ -133,6 +132,66 @@ function help(message, args) {
         );
     else {
         if (args[1] === 'help') write(message, 'Help command: Lists out all possible commands.');
+    }
+}
+
+async function sync(message, args) {
+    if (args.length < 2) {
+        write(message, 'Please specify the resource to sync.');
+        return;
+    }
+
+    write(message, 'Syncing resources...');
+
+    for (let i = 1; i < args.length; i++) {
+        let a = args[i];
+        if (a === 'todo') {
+            const d = await fetch(backend);
+            const todo = await d.json();
+            window.state.todo = todo.todo;
+            console.log(todo);
+
+            const d2 = await fetch(`${backend}/settings`);
+            const settings = await d2.json();
+
+            window.state.tags = settings.tags;
+            window.state.count = settings.count;
+            list('list', ['list']);
+        } else if (a === 'news') {
+            const d3 = await fetch(`https://api.michaelzhao.xyz/news`);
+            const news = await d3.json();
+            window.state.news = news.results;
+            writeNews();
+        }
+        write(message, `| Synced ${a} successfully!`, true);
+    }
+}
+
+async function config(message, args, options) {
+    if (args.length < 2) {
+        write(message, 'Invalid argument length for config: needs at least 2 arguments');
+        return;
+    }
+
+    if (args[1] === 'list') {
+        const backend = await browser.storage.sync.get('backend');
+        if (backend.backend !== undefined) write(message, `Backend URL: ${backend.backend}`);
+        else
+            write(
+                message,
+                'Error: No backend URL defined. Use the [config backend] command to define.'
+            );
+    } else if (args[1] === 'backend') {
+        if (args.length > 2) {
+            await browser.storage.sync.set({ backend: args[2] }).catch((error) => {
+                console.error(error);
+            });
+            write(message, `Set backend URL to ${args[2]}. Please reload the page.`);
+            return;
+        } else {
+            write(message, 'Error: No backend URL defined');
+            return;
+        }
     }
 }
 
@@ -182,6 +241,8 @@ function list(message, args) {
         todoList.append(todoItem);
     });
 }
+
+function add(message, args, options) {}
 
 // 0 for non-existent, 1 for > month, 2 for > week, 3 for > day, 4 for same day, 5 for OVERDUE!
 function calcDueDateUrgency(due) {

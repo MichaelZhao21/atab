@@ -17,12 +17,6 @@
 		"newtab": "src/index.html"
 	},
 
-    "options_ui": {
-		"page": "src/options.html",
-		"browser_style": true,
-		"chrome_style": true
-	},
-
     "permissions": ["<all_urls>", "storage"],
 
 	"browser_specific_settings": {
