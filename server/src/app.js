@@ -34,6 +34,15 @@ app.post('/', async function (req, res, next) {
         tags: data.tags,
     });
 
+    const settingsCollection = client
+        .db(process.env.TODO_DB)
+        .collection(process.env.SETTINGS_COLLECTION);
+    await settingsCollection.updateOne(
+        { name: 'todo' },
+        { $set: { count: data.id } },
+        { upsert: true }
+    );
+
     if (dbRes.insertedCount !== 1) {
         sendRes(res, 500, 'Could not insert item into the database');
         return;
@@ -52,8 +61,9 @@ app.post('/:id', async function (req, res, next) {
 });
 
 app.get('/settings', async function (req, res, next) {
-    // { count, tags }
-    res.send({ count: 0, tags: ['boba', 'school'] });
+    const collection = client.db(process.env.TODO_DB).collection(process.env.SETTINGS_COLLECTION);
+    const data = await collection.findOne({ name: 'todo' });
+    res.send(data);
 });
 
 app.post('/settings', async function (req, res, next) {

@@ -1,11 +1,10 @@
 window.state = { tags: null, todo: null, news: null, count: null };
 
 $(document).ready(async function () {
-    const backend = 'http://localhost:5000';
-    window.backend = backend;
-
-    sync('sync todo news', ['sync', 'todo', 'news']);
     startTime();
+
+    await sync('sync todo news', ['sync', 'todo', 'news']);
+    list('list', ['list']);
 
     $('#cmd').keypress(runCommand);
 });
@@ -109,6 +108,9 @@ function runCommand(e) {
         case 'list':
             list(message, args);
             break;
+        case 'add':
+            add(message, args, options);
+            break;
         default:
             write(message, `${message}: command not found`);
             break;
@@ -136,6 +138,14 @@ function help(message, args) {
 }
 
 async function sync(message, args) {
+    const backend = await browser.storage.sync.get('backend');
+    window.backend = backend.backend;
+
+    if (backend.backend === undefined) {
+        write(message, 'Please use the [config backend] command to specify a backend');
+        return;
+    }
+
     if (args.length < 2) {
         write(message, 'Please specify the resource to sync.');
         return;
@@ -146,17 +156,17 @@ async function sync(message, args) {
     for (let i = 1; i < args.length; i++) {
         let a = args[i];
         if (a === 'todo') {
-            const d = await fetch(backend);
+            const d = await fetch(window.backend);
             const todo = await d.json();
             window.state.todo = todo.todo;
             console.log(todo);
 
-            const d2 = await fetch(`${backend}/settings`);
+            const d2 = await fetch(`${window.backend}/settings`);
             const settings = await d2.json();
+            console.log(settings);
 
             window.state.tags = settings.tags;
             window.state.count = settings.count;
-            list('list', ['list']);
         } else if (a === 'news') {
             const d3 = await fetch(`https://api.michaelzhao.xyz/news`);
             const news = await d3.json();
@@ -196,53 +206,67 @@ async function config(message, args, options) {
 }
 
 function list(message, args) {
-    if (window.state.todo === null) {
+    if (window.state.todo === null || window.state.todo.length === 0) {
         write(message, 'No todos found :(');
         return;
     }
 
-    window.state.todo.forEach((t, i) => {
+    // Sort
+    const sortedList = [...window.state.todo].sort((a, b) => {
+        if (a.priority === b.priority) return a.id - b.id;
+        else return a.priority - b.priority;
+    });
+
+    // Trim
+    let cutList = sortedList;
+    if (args.length > 1 && args[1] > 0) cutList = sortedList.slice(0, args[1]);
+
+    // Create output
+    cutList.forEach((t, i) => {
         const dueDateUrgency = calcDueDateUrgency(t.due);
         const formattedDueDate = formatDueDate(t.due);
         const priorityStars = createPriorityStars(t.priority);
-        const tagList = createTagList(t.tags, window.state.tags);
-        display.append($(priorityStars));
-        display.append($(`<div class="todo-divider">|</div>`));
-        display.append(
-            $(`<p class="todo-text todo-due urgent-${dueDateUrgency}">${formattedDueDate}</p>`)
-        );
-        display.append($(`<div class="todo-divider">|</div>`));
-        display.append($(`<p class="todo-text todo-tag">${t.tags[0] || '&nbsp'}</p>`));
-        display.append($(`<div class="todo-divider">|</div>`));
-        display.append($(`<p class="todo-text todo-tag">${t.tags[1] || '&nbsp'}</p>`));
-        display.append($(`<div class="todo-divider">|</div>`));
-        display.append($(`<p class="todo-text todo-tag">${t.tags[2] || '&nbsp'}</p>`));
-        display.append($(`<div class="todo-divider">|</div>`));
-        display.append($(`<p class="todo-text todo-name">${t.name}</p>`));
-        display.click(toggleDropdown.bind(this, i));
-        todoItem.append(display);
-        let dropdown = $(
-            `<div id="todo-drop-${i}" class="todo-item-dropdown" style="display:none;"></div>`
-        );
-        let arrow = $(`<div class="todo-item-arrow">&gt;</div>`);
-        arrow.click(openPopup.bind(this, 1, t));
-        dropdown.append(arrow);
-        let info = $(`<div class="todo-item-dropdown-right"></div>`);
-        info.append($(`<p class="todo-item-title">${t.name}</p>`));
-        if (tagList.length > 0) {
-            let tagsComponent = $(`<p class="todo-item-tags"></p>`);
-            tagsComponent.append($(`<span class="todo-item-tags-label">Tags:&nbsp;</span>`));
-            tagsComponent.append($(`<span class="todo-item-tags-list">${tagList}</span>`));
-            info.append(tagsComponent);
-        }
-        info.append($(`<p class="todo-item-description">${t.description}</p>`));
-        dropdown.append(info);
-        todoItem.append(dropdown);
-        todoList.append(todoItem);
+        const formattedId = createFormattedId(t.id);
+        let out = `${formattedId} | ${priorityStars} | <span class="todo-due urgent-${dueDateUrgency}">${formattedDueDate}</span> | ${t.name}`;
+        write(message, out, i !== 0);
     });
 }
 
-function add(message, args, options) {}
+async function add(message, args, options) {
+    const id = ++window.state.count;
+
+    // Calculate due date
+    // TODO: check for valid format of date
+    // TODO: add ability to do today+1 or smth
+    let due = 0;
+    if (options.d === 'today') due = dayjs().startOf('day').valueOf();
+    else if (options.d !== undefined) due = dayjs(options.d, 'MM-DD-YYYY').startOf('day').valueOf();
+
+    // Split tags
+    let tags = [];
+    if (options.t !== undefined) tags = options.t.split(' ');
+
+    // Create data obj
+    const data = {
+        id,
+        name: options.n || '',
+        due,
+        priority: Number(options.p) || 1,
+        description: options.m || '',
+        tags,
+    };
+
+    await fetch(window.backend, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' },
+    });
+
+    window.state.todo.push(data);
+    window.state.count = id;
+
+    write(message, `Successfully added item: ID ${id}`);
+}
 
 // 0 for non-existent, 1 for > month, 2 for > week, 3 for > day, 4 for same day, 5 for OVERDUE!
 function calcDueDateUrgency(due) {
@@ -265,19 +289,12 @@ function createPriorityStars(priority) {
     const grey = 5 - priority;
     return `<span class="p${priority}">${'*'.repeat(
         priority
-    )}</span><span class="p-grey">${'*'.repeat(grey)}</p>`;
+    )}</span><span class="grey">${'*'.repeat(grey)}</span>`;
 }
 
-function createTagList(tags, tagList) {
-    if (tagList === undefined || tags === null) return 'ERROR';
-
-    let tagString = '';
-    tags.forEach((t) => {
-        let tag = tagList.find((f) => f.char === t);
-        tag = tag === undefined ? '[INVALID TAG]' : tag.text;
-        tagString += tag + ', ';
-    });
-    return tagString.slice(0, -2);
+function createFormattedId(id) {
+    const grey = 5 - String(id).length;
+    return `<span class="grey">${'0'.repeat(grey)}</span>${id}`;
 }
 
 function toggleDropdown(i) {
@@ -305,42 +322,6 @@ async function savePopup() {
         window.location.reload();
         return;
     }
-
-    // Edit Todo
-    const id = $('#edit-id').text();
-    const name = $('#edit-name').val();
-    const m = $('#edit-m').val();
-    const d = $('#edit-d').val();
-    const y = $('#edit-y').val();
-    const priority = $('#edit-priority').val();
-    const rawTags = $('#edit-tags').val();
-    const description = $('#edit-description').val();
-
-    // Calculate due date
-    let due = 0;
-    if (m !== '' && d !== '' && y !== '')
-        due = dayjs(`${m}/${d}/${y}`, 'M/D/YYYY').startOf('day').valueOf();
-
-    // Format tags
-    let tagsParsed = [];
-    rawTags.split('').forEach((t) => {
-        if (
-            t.toLowerCase().match(/[a-z]/i) &&
-            window.tags.find((i) => i.char === t.toUpperCase()) !== undefined &&
-            tagsParsed.indexOf(t.toUpperCase()) === -1
-        ) {
-            tagsParsed.push(t.toUpperCase());
-        }
-    });
-
-    // Create data obj
-    const data = {
-        name,
-        due,
-        priority,
-        description,
-        tags: tagsParsed,
-    };
 
     if (id === '') {
         await fetch(`${window.backend}/todo`, {

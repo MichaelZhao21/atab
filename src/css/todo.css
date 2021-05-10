@@ -70,6 +70,15 @@
     white-space: nowrap;
     font-size: 0.8rem;
     line-height: 1rem;
+    color: white;
+
+    /* Define colors */
+    --p6: #b00000;
+    --p5: #ff7777;
+    --p4: #ffa592;
+    --p3: #fff492;
+    --p2: #bcff2d;
+    --p1: #92ff8f;
 }
 
 .pre {
@@ -98,6 +107,34 @@
 
 .p1 {
     color: var(--p1);
+}
+
+.grey {
+    color: #777777;
+}
+
+.todo-due {
+    color: #777;
+}
+
+.todo-due.urgent-1 {
+    color: var(--p2);
+}
+
+.todo-due.urgent-2 {
+    color: var(--p3);
+}
+
+.todo-due.urgent-3 {
+    color: var(--p4);
+}
+
+.todo-due.urgent-4 {
+    color: var(--p5);
+}
+
+.todo-due.urgent-5 {
+    color: var(--p6);
 }
 
 /* Command line input */
