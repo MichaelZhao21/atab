@@ -6,6 +6,7 @@ This is an extension that will replace your new tab into a more productive and u
 
 - [v1.0](https://addons.mozilla.org/firefox/downloads/file/3774287/task_tab-1.0-fx.xpi)
 - [v1.1](https://addons.mozilla.org/firefox/downloads/file/3774288/task_tab-1.1-fx.xpi)
+- [v.1.2](https://addons.mozilla.org/firefox/downloads/file/3774289/task_tab-1.2-fx.xpi)
 
 ## Installation
 
