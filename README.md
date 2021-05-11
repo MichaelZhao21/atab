@@ -22,9 +22,10 @@ serverless deploy
 
 Prompts should come up that asks for AWS keys and how to create them. Follow the prompts and simply install the neccessary libraries and deploy it!
 
+For production, use `serverless deploy --stage production`
+
 ## TODO (future plans and stuff)
 
-* Finish the basic app for personal use (using my own API for now)
 * Create and host a dedicated backend, seperate from my own API (this will be a server folder in this repo)
 * Add the ability for users to store in google drive, dropbox, etc
 * Add instructions on how to self-host the backend

@@ -3,7 +3,7 @@ window.state = { tags: null, todo: null, news: null, count: null };
 $(document).ready(async function () {
     startTime();
 
-    await sync('sync todo news', ['sync', 'todo', 'news']);
+    await sync('sync news todo', ['sync', 'news', 'todo']);
     list('list', ['list']);
 
     $('#cmd').keypress(runCommand);
@@ -111,6 +111,17 @@ function runCommand(e) {
         case 'add':
             add(message, args, options);
             break;
+        case 'edit':
+            edit(message, args, options);
+            break;
+        case 'delete':
+            deleteTodo(message, args);
+            break;
+        case 'done':
+            done(message, args);
+            break;
+        case 'tags':
+        // TODO: Add tags command
         default:
             write(message, `${message}: command not found`);
             break;
@@ -130,10 +141,12 @@ function help(message, args) {
     if (args.length === 1)
         write(
             message,
-            'Commands: help, list, add, edit, done, delete, tlist, tadd, tdelete, tedit<br>Use help [command] to see the help info for a specific command.'
+            'Commands: help, sync, config, list, add, edit, done, delete<br>Use help [command] to see the help info for a specific command.'
         );
     else {
         if (args[1] === 'help') write(message, 'Help command: Lists out all possible commands.');
+        else write(message, 'ERROR: Not a valid command that has information')
+        // TODO: Add the rest of the commands here!
     }
 }
 
@@ -153,17 +166,16 @@ async function sync(message, args) {
 
     write(message, 'Syncing resources...');
 
+    // TODO: Change this so both fetches can happen at the same time
     for (let i = 1; i < args.length; i++) {
         let a = args[i];
         if (a === 'todo') {
             const d = await fetch(window.backend);
             const todo = await d.json();
             window.state.todo = todo.todo;
-            console.log(todo);
 
             const d2 = await fetch(`${window.backend}/settings`);
             const settings = await d2.json();
-            console.log(settings);
 
             window.state.tags = settings.tags;
             window.state.count = settings.count;
@@ -214,7 +226,7 @@ function list(message, args) {
     // Sort
     const sortedList = [...window.state.todo].sort((a, b) => {
         if (a.priority === b.priority) return a.id - b.id;
-        else return a.priority - b.priority;
+        else return b.priority - a.priority;
     });
 
     // Trim
@@ -268,6 +280,92 @@ async function add(message, args, options) {
     write(message, `Successfully added item: ID ${id}`);
 }
 
+async function edit(message, args, options) {
+    if (args.length !== 2) {
+        write(message, 'ERROR: Edit command takes id as the one argument');
+        return;
+    }
+
+    const id = Number(args[1]);
+    const prev = window.state.todo.find((t) => t.id === id);
+    if (prev === null || prev === undefined) {
+        write(message, 'ERROR: Invalid ID');
+        return;
+    }
+
+    // Date
+    let due = prev.due;
+    if (options.d === 'today') due = dayjs().startOf('day').valueOf();
+    else if (options.d !== undefined) due = dayjs(options.d, 'MM-DD-YYYY').startOf('day').valueOf();
+
+    // Split tags
+    let tags = prev.tags;
+    if (options.t !== undefined) tags = options.t.split(' ');
+
+    // Create data obj
+    const data = {
+        id,
+        name: options.n || prev.name,
+        due,
+        priority: Number(options.p) || prev.priority,
+        description: options.m || prev.description,
+        tags,
+    };
+
+    await fetch(`${window.backend}/${id}`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' },
+    });
+
+    const index = window.state.todo.findIndex((t) => t.id === id);
+    window.state.todo[index] = data;
+
+    write(message, `Successfully edited item: ID ${id}`);
+}
+
+async function deleteTodo(message, args) {
+    if (args.length < 2) {
+        write(message, 'ERROR: Specify an ID or list of IDs to delete');
+        return;
+    }
+
+    write(message, 'Deleting specified todos...');
+    for (var i = 1; i < args.length; i++) {
+        const index = window.state.todo.findIndex((t) => t.id === Number(args[i]));
+        if (index === -1) {
+            write(message, `| Could not find ID ${args[i]} to delete, skipping`, true);
+            continue;
+        }
+        await fetch(`${window.backend}/${args[i]}`, { method: 'DELETE' });
+        window.state.todo.splice(index, 1);
+        write(message, `| Deleted item: ID ${args[i]}`, true);
+    }
+}
+
+async function done(message, args) {
+    // TODO: Show list of finished tasks
+    if (args.length < 2) {
+        write(message, 'ERROR: Specify an ID or list of IDs to delete');
+        return;
+    }
+
+    write(message, 'Marking complete...');
+    for (var i = 1; i < args.length; i++) {
+        const index = window.state.todo.findIndex((t) => t.id === Number(args[i]));
+        if (index === -1) {
+            write(message, `| Could not find ID ${args[i]} to mark as complete, skipping`, true);
+            continue;
+        }
+        await fetch(`${window.backend}/done/${args[i]}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        window.state.todo.splice(index, 1);
+        write(message, `| Completed item: ID ${args[i]}`, true);
+    }
+}
+
 // 0 for non-existent, 1 for > month, 2 for > week, 3 for > day, 4 for same day, 5 for OVERDUE!
 function calcDueDateUrgency(due) {
     if (due === 0) return 0;
@@ -295,46 +393,4 @@ function createPriorityStars(priority) {
 function createFormattedId(id) {
     const grey = 5 - String(id).length;
     return `<span class="grey">${'0'.repeat(grey)}</span>${id}`;
-}
-
-function toggleDropdown(i) {
-    let todoItem = $(`#todo-drop-${i}`);
-    let prev = todoItem.css('display');
-    if (prev === 'none') todoItem.css('display', 'flex');
-    else todoItem.css('display', 'none');
-}
-
-async function savePopup() {
-    // Edit Tags
-    if (popupId === 2) {
-        const tagArea = $('#tags-area').val();
-        const tagList = tagArea.split('\n').map((t) => {
-            let tSplit = t.split(' ');
-            if (tSplit.length < 2 || tSplit[0].length !== 1) return null;
-            return { char: tSplit[0], text: tSplit.slice(1).join(' ') };
-        });
-        const finalList = tagList.filter((t) => t !== null);
-        await fetch(`${window.backend}/todo/settings`, {
-            method: 'POST',
-            body: JSON.stringify({ tags: finalList }),
-            headers: { 'Content-Type': 'application/json' },
-        });
-        window.location.reload();
-        return;
-    }
-
-    if (id === '') {
-        await fetch(`${window.backend}/todo`, {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: { 'Content-Type': 'application/json' },
-        });
-    } else {
-        await fetch(`${window.backend}/todo/${id}`, {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: { 'Content-Type': 'application/json' },
-        });
-    }
-    window.location.reload();
 }
