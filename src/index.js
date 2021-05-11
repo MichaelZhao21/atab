@@ -188,7 +188,8 @@ async function sync(message, args) {
             window.state.tags = settings.tags;
             window.state.count = settings.count;
             $('#task-count').text(
-                '0'.repeat(5 - window.state.todo.length) + String(window.state.todo.length)
+                '0'.repeat(5 - String(window.state.todo.length).length) +
+                    String(window.state.todo.length)
             );
         } else if (a === 'news') {
             const d3 = await fetch(`https://api.michaelzhao.xyz/news`);
