@@ -145,7 +145,7 @@ function help(message, args) {
         );
     else {
         if (args[1] === 'help') write(message, 'Help command: Lists out all possible commands.');
-        else write(message, 'ERROR: Not a valid command that has information')
+        else write(message, 'ERROR: Not a valid command that has information');
         // TODO: Add the rest of the commands here!
     }
 }
@@ -179,6 +179,9 @@ async function sync(message, args) {
 
             window.state.tags = settings.tags;
             window.state.count = settings.count;
+            $('#task-count').text(
+                '0'.repeat(5 - window.state.todo.length) + String(window.state.todo.length)
+            );
         } else if (a === 'news') {
             const d3 = await fetch(`https://api.michaelzhao.xyz/news`);
             const news = await d3.json();
