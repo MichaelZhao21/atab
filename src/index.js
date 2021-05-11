@@ -171,8 +171,16 @@ async function sync(message, args) {
         let a = args[i];
         if (a === 'todo') {
             const d = await fetch(window.backend);
-            const todo = await d.json();
-            window.state.todo = todo.todo;
+            try {
+                const todo = await d.json();
+                window.state.todo = todo.todo;
+            } catch (error) {
+                write(
+                    message,
+                    'ERROR: Invalid backend. Please use the config backend command to fix this issue.'
+                );
+                return;
+            }
 
             const d2 = await fetch(`${window.backend}/settings`);
             const settings = await d2.json();
