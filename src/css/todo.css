@@ -152,3 +152,21 @@
     font-size: 0.8rem;
     font-family: 'Inconsolata', monospace;
 }
+
+/* Misc */
+
+.wiki-img-wrapper {
+    display: block;
+    width: min-content;
+}
+
+.wiki-img {
+    height: 10rem;
+    margin: 0.5rem 0;
+    display: block;
+}
+
+p {
+    margin: 0;
+    white-space: break-spaces;
+}

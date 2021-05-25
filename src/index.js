@@ -141,6 +141,9 @@ function runCommand(e) {
         case 'done':
             done(message, args);
             break;
+        case 'lock':
+            lock(message, args);
+            break;
         case 'tags':
         // TODO: Add tags command
         default:
@@ -440,6 +443,30 @@ async function done(message, args) {
     writeTaskCount();
 }
 
+async function lock(message, args) {
+    $('#todo').text('');
+
+    let choice = args[1];
+    switch (choice) {
+        case 'wiki':
+        default: {
+            const data = await fetch('https://en.wikipedia.org/api/rest_v1/page/random/summary', {
+                headers: {
+                    accept: 'application/problem+json',
+                },
+            }).then((res) => res.json());
+            write(
+                message,
+                `<a class="wiki-img-wrapper" href="${data.content_urls.desktop.page}">
+                    <img class="wiki-img" alt="${data.displaytitle}" src="${data.originalimage.source}" />
+                </a>
+                <a href="${data.content_urls.desktop.page}">[${data.displaytitle}]</a>
+                ${data.extract_html}`
+            );
+        }
+    }
+}
+
 // 0 for non-existent, 1 for > month, 2 for > week, 3 for > day, 4 for same day, 5 for OVERDUE!
 function calcDueDateUrgency(due) {
     if (due === 0) return 0;
@@ -473,6 +500,10 @@ function randColor() {
     const raw = Math.round(Math.random() * 16777215).toString(16);
     return `${'0'.repeat(6 - raw.length)}${raw}`;
 }
+
+// function randInt(min, max) {
+//     return Math.round(Math.random() * (max - min) + min);
+// }
 
 function writeTaskCount() {
     $('#task-count').text(
