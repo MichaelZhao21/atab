@@ -6,8 +6,20 @@ $(document).ready(async () => {
     if (wait === undefined) wait = 0;
 
     if (wait !== 0) write(null, `Waiting ${wait} ms before loading...`, true);
+
+    setBackground();
     setTimeout(setup, wait);
 });
+
+async function setBackground() {
+    const data = await browser.storage.sync.get(['background-start', 'background-end']);
+    const start = data['background-start'];
+    const end = data['background-end'];
+
+    const root = document.documentElement.style;
+    if (start !== undefined) root.setProperty('--back-top', `#${start}`);
+    if (end !== undefined) root.setProperty('--back-bottom', `#${end}`);
+}
 
 async function setup() {
     startTime();
@@ -224,6 +236,11 @@ async function config(message, args, options) {
             if (data[i] !== undefined) write(message, `| ${i}: ${data[i]}`, true);
             else write(message, `| ${i}: undefined`, true);
         });
+    } else if (args[1] === 'clear') {
+        if (args.length > 2) {
+            await browser.storage.sync.remove(args[2]);
+            write(message, `Cleared value of ${args[2]} from config`);
+        } else write(message, `Error: Could not clear value of ${args[2]}`);
     } else if (args[1] === 'backend') {
         if (args.length > 2) {
             await browser.storage.sync.set({ backend: args[2] }).catch((error) => {
@@ -244,6 +261,31 @@ async function config(message, args, options) {
             write(message, `Set load wait time to ${args[2]}.`);
             return;
         } else write(message, 'Error: No load wait time defined');
+    } else if (args[1] === 'background-start' || args[1] === 'background-end') {
+        if (args.length > 2) {
+            if (args[2].length !== 6) {
+                write(message, `Error: Please enter a 6 digit hex code [${args[2]}]`);
+                return;
+            }
+            await browser.storage.sync.set({ [args[1]]: args[2] }).catch((error) => {
+                console.error(error);
+            });
+            write(message, `Set ${args[1]} to #${args[2]}.`);
+            setBackground();
+            return;
+        } else write(message, 'Error: No color defined');
+    } else if (args[1] === 'background-random') {
+        const obj = { 'background-start': randColor(), 'background-end': randColor() };
+        await browser.storage.sync.set(obj).catch((error) => {
+            console.error(error);
+        });
+        write(
+            message,
+            `Random background colors set: #${obj['background-start']} to #${obj['background-end']}`
+        );
+        setBackground();
+    } else {
+        write(message, 'Invalid config options');
     }
 }
 
@@ -423,4 +465,9 @@ function createPriorityStars(priority) {
 function createFormattedId(id) {
     const grey = 5 - String(id).length;
     return `<span class="grey">${'0'.repeat(grey)}</span>${id}`;
+}
+
+function randColor() {
+    const raw = Math.round(Math.random() * 16777215).toString(16);
+    return `${'0'.repeat(6 - raw.length)}${raw}`;
 }

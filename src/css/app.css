@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&display=swap');
 
+:root {
+    --back-top: #9574ff;
+    --back-bottom: #b003ef;
+}
+
 html, body {
     margin: 0;
     height: 100%;
     width: 100%;
     overflow: hidden;
     font-size: 24px;
-}
-
-body {
-    --back-top: #9574ff;
-    --back-bottom: #b003ef;
 }
 
 .app {
