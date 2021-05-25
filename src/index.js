@@ -208,10 +208,7 @@ async function sync(message, args) {
 
             window.state.tags = settings.tags;
             window.state.count = settings.count;
-            $('#task-count').text(
-                '0'.repeat(5 - String(window.state.todo.length).length) +
-                    String(window.state.todo.length)
-            );
+            writeTaskCount();
         } else if (a === 'news') {
             const d3 = await fetch(`https://api.michaelzhao.xyz/news`);
             const news = await d3.json();
@@ -348,6 +345,7 @@ async function add(message, args, options) {
 
     window.state.todo.push(data);
     window.state.count = id;
+    writeTaskCount();
 
     write(message, `Successfully added item: ID ${id}`);
 }
@@ -412,7 +410,9 @@ async function deleteTodo(message, args) {
         await fetch(`${window.backend}/${args[i]}`, { method: 'DELETE' });
         window.state.todo.splice(index, 1);
         write(message, `| Deleted item: ID ${args[i]}`, true);
+        window.state.count--;
     }
+    writeTaskCount();
 }
 
 async function done(message, args) {
@@ -435,7 +435,9 @@ async function done(message, args) {
         });
         window.state.todo.splice(index, 1);
         write(message, `| Completed item: ID ${args[i]}`, true);
+        window.state.count--;
     }
+    writeTaskCount();
 }
 
 // 0 for non-existent, 1 for > month, 2 for > week, 3 for > day, 4 for same day, 5 for OVERDUE!
@@ -470,4 +472,10 @@ function createFormattedId(id) {
 function randColor() {
     const raw = Math.round(Math.random() * 16777215).toString(16);
     return `${'0'.repeat(6 - raw.length)}${raw}`;
+}
+
+function writeTaskCount() {
+    $('#task-count').text(
+        '0'.repeat(5 - String(window.state.todo.length).length) + String(window.state.todo.length)
+    );
 }
