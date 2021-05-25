@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Task Tab",
-    "version": "1.3",
+    "version": "1.4",
     "author": "Michael Zhao",
     "description": "An extension that will replace your new tab into a more productive and useful interface!",
     

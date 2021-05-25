@@ -1,13 +1,22 @@
 window.state = { tags: null, todo: null, news: null, count: null };
 
-$(document).ready(async function () {
+$(document).ready(async () => {
+    const data = await browser.storage.sync.get('wait');
+    let wait = data.wait;
+    if (wait === undefined) wait = 0;
+
+    if (wait !== 0) write(null, `Waiting ${wait} ms before loading...`, true);
+    setTimeout(setup, wait);
+});
+
+async function setup() {
     startTime();
 
     await sync('sync news todo', ['sync', 'news', 'todo']);
     list('list', ['list']);
 
     $('#cmd').keypress(runCommand);
-});
+}
 
 /* DATE AND TIME SECTION */
 
@@ -208,13 +217,13 @@ async function config(message, args, options) {
     }
 
     if (args[1] === 'list') {
-        const backend = await browser.storage.sync.get('backend');
-        if (backend.backend !== undefined) write(message, `Backend URL: ${backend.backend}`);
-        else
-            write(
-                message,
-                'Error: No backend URL defined. Use the [config backend] command to define.'
-            );
+        write(message, 'All config options:');
+        const items = ['backend', 'wait', 'background-start', 'background-end'];
+        const data = await browser.storage.sync.get(items);
+        items.forEach((i) => {
+            if (data[i] !== undefined) write(message, `| ${i}: ${data[i]}`, true);
+            else write(message, `| ${i}: undefined`, true);
+        });
     } else if (args[1] === 'backend') {
         if (args.length > 2) {
             await browser.storage.sync.set({ backend: args[2] }).catch((error) => {
@@ -222,10 +231,19 @@ async function config(message, args, options) {
             });
             write(message, `Set backend URL to ${args[2]}. Please reload the page.`);
             return;
-        } else {
-            write(message, 'Error: No backend URL defined');
+        } else write(message, 'Error: No backend URL defined');
+    } else if (args[1] === 'wait') {
+        if (args.length > 2) {
+            if (isNaN(args[2])) {
+                write(message, `Error: Wait time is not a number [${args[2]}]`);
+                return;
+            }
+            await browser.storage.sync.set({ wait: Number(args[2]) }).catch((error) => {
+                console.error(error);
+            });
+            write(message, `Set load wait time to ${args[2]}.`);
             return;
-        }
+        } else write(message, 'Error: No load wait time defined');
     }
 }
 
