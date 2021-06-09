@@ -1,6 +1,6 @@
 $(document).ready(async () => {
     startTime();
-    
+    writeNews();    
 });
 
 /* DATE AND TIME SECTION */
