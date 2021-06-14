@@ -53,6 +53,7 @@
     margin: 0 0.25rem;
     border: none;
     border-bottom: 1px solid #aaa;
+    flex-shrink: 0;
     
     font-size: 0.75rem;
     background-color: transparent;
@@ -87,4 +88,18 @@
 
 .notes-link:hover {
     color: white;
+}
+
+.settings-button {
+    background-color: transparent;
+    border: none;
+    text-decoration: underline;
+    color: white;
+    transition: 0.2s;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.settings-button:hover {
+    color: #83e1ff;
 }

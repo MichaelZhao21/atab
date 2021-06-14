@@ -46,6 +46,12 @@ async function getAndSaveBackground() {
     };
 }
 
+async function newBackground() {
+    console.log('wfgwef')
+    await browser.storage.local.remove('background');
+    getAndSaveBackground();
+}
+
 /* ==================== DATE AND TIME SECTION ==================== */
 
 function startTime() {
@@ -117,7 +123,6 @@ async function loadLinks() {
         let splitLine = line.split(' ');
         const url = splitLine[0];
         const name = line.substring(url.length + 1);
-        console.log(name);
         notesRef.append($(`<a href=${url} class="notes-link">${name}</a>`));
     });
 }
@@ -140,7 +145,18 @@ async function loadNotes() {
     } else $('#notes-text-edit').val(notes);
 }
 
-async function loadSettings() {}
+async function loadSettings() {
+    // Change button messages and clear text container
+    $('#nb-left').addClass('hidden');
+    $('#nb-right').text('Save text fields');
+    $('#notes-text').text('');
+    $('#notes-text').append(
+        $(
+            `<button id="new-background-button" class="settings-button">New Random Background</button>`
+        )
+    );
+    $('#new-background-button').click(newBackground.bind(this));
+}
 
 function handleAction(left = true) {
     const textRef = $('#notes-text');
