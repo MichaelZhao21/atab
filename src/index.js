@@ -83,6 +83,7 @@ async function writeNews() {
 /* ==================== NOTES SECTION ==================== */
 
 function switchSection(section) {
+    $('#nb-info').text('');
     $('#notes-text').attr('class', `notes-text ${section}`);
     if (section === 'links') loadLinks();
     else if (section === 'notes') loadNotes();
@@ -116,12 +117,28 @@ async function loadLinks() {
         let splitLine = line.split(' ');
         const url = splitLine[0];
         const name = line.substring(url.length + 1);
-        console.log(name)
+        console.log(name);
         notesRef.append($(`<a href=${url} class="notes-link">${name}</a>`));
     });
 }
 
-async function loadNotes() {}
+async function loadNotes() {
+    // Change button messages and clear text container
+    $('#nb-left').removeClass('hidden');
+    $('#nb-left').text('Revert');
+    $('#nb-right').text('Save');
+    $('#notes-text').html($('<textarea id="notes-text-edit"></textarea>'));
+
+    // Load data
+    const data = await browser.storage.sync.get('notes');
+    const notes = data.notes;
+
+    // If no links, write default message, else write the notes
+    if (notes === undefined || notes === '') {
+        $('#notes-text-edit').val('');
+        browser.storage.sync.set({ notes: '' });
+    } else $('#notes-text-edit').val(notes);
+}
 
 async function loadSettings() {}
 
@@ -135,8 +152,10 @@ function handleAction(left = true) {
             else saveLinks();
         }
     } else if (textRef.hasClass('notes')) {
-        if (left) loadNotes();
-        else saveNotes();
+        if (left) {
+            loadNotes();
+            $('#nb-info').text('Reverted to last save');
+        } else saveNotes();
     } else {
     }
 }
@@ -154,13 +173,20 @@ async function editLinks() {
 }
 
 async function saveLinks() {
+    $('#nb-info').text('Saving...');
     const newLinks = $('#notes-text-edit').val();
-    console.log(newLinks);
-    await browser.storage.sync.set({ links: newLinks })
+    await browser.storage.sync.set({ links: newLinks });
+    $('#nb-info').text('Saved links');
     loadLinks();
 }
 
-async function saveNotes() {}
+async function saveNotes() {
+    $('#nb-info').text('Saving...');
+    const newNotes = $('#notes-text-edit').val();
+    await browser.storage.sync.set({ notes: newNotes });
+    $('#nb-info').text('Saved notes');
+    loadNotes();
+}
 
 /* ==================== UTILS ==================== */
 

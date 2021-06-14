@@ -40,6 +40,13 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    align-items: center;
+}
+
+#nb-info {
+    width: 100%;
+    margin-left: 0.25rem;
+	font-size: 0.75rem;
 }
 
 .notes-button {
@@ -60,9 +67,10 @@
 }
 
 #notes-text-edit {
-	width: calc(100% - 0.5rem);
-	height: calc(100% - 0.5rem);
+	width: calc(100% - 0.5rem - 2px);
+	height: calc(100% - 0.5rem - 2px);
 	padding: 0.25rem;
+    border: 1px solid #aaa;
 
     background: transparent;
 	color: white;
