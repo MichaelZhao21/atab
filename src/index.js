@@ -19,7 +19,20 @@ async function getAndSaveBackground() {
         d.json()
     );
     $('#background-image').attr('src', newBackground.imageUrl);
-    browser.storage.local.set({ background: newBackground.imageUrl });
+
+    // Save the image to local storage
+    let img = new Image();
+    img.src = newBackground.imageUrl;
+    let imgCanvas = document.createElement('canvas');
+    let imgContext = imgCanvas.getContext('2d');
+    imgCanvas.width = window.innerWidth;
+    imgCanvas.height = window.innerHeight;
+    img.onload = () => {
+        imgContext.drawImage(img, 0, 0, window.innerWidth, window.innerHeight);
+        const imgAsUrl = imgCanvas.toDataURL('image/png');
+        console.log(imgAsUrl);
+        browser.storage.local.set({ background: imgAsUrl });
+    };
 }
 
 /* DATE AND TIME SECTION */
