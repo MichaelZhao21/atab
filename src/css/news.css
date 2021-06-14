@@ -1,3 +1,7 @@
+#news {
+    padding-left: 0.5vw;
+}
+
 #news-text {
     height: calc(100% - 1.5vw - 2px);
     overflow-y: auto;
@@ -18,7 +22,7 @@
 }
 
 .article {
-    width: 100%;
+    width: calc(100% - 0.25rem);
     margin-bottom: 0.4rem;
     border: 1px solid transparent;
 
@@ -37,7 +41,7 @@
 }
 
 .article-number {
-    flex-basis: 1rem;
+    flex-basis: 1.25rem;
     flex-shrink: 0;
     margin: 0;
     padding: 0;

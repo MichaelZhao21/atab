@@ -9,7 +9,7 @@ $(document).ready(async () => {
 async function setBackground() {
     // Retrieve the background from the local storage
     const savedBackground = await browser.storage.local.get('background');
-    
+
     // If not saved, get a new background or else set the bkgd to the saved image
     if (savedBackground.background === undefined) {
         getAndSaveBackground();
@@ -35,7 +35,6 @@ async function getAndSaveBackground() {
     img.onload = () => {
         imgContext.drawImage(img, 0, 0, window.innerWidth, window.innerHeight);
         const imgAsUrl = imgCanvas.toDataURL('image/png');
-        console.log(imgAsUrl);
         browser.storage.local.set({ background: imgAsUrl });
     };
 }
@@ -65,13 +64,18 @@ async function writeNews() {
         let subtitle = n.abstract;
         if (subtitle === '') subtitle = n.byline;
         let article = $(`<a class="article" href="${n.url}"></a>`);
-        article.append($(`<p class="article-number">${i + 1}</p>`));
+        article.append($(`<p class="article-number">${pad(i + 1)}</p>`));
         let articleRight = $(`<div class="article-right"></div>`);
         articleRight.append($(`<p class="article-title">${n.title}</p>`));
         articleRight.append($(`<p class="article-subtitle">${subtitle}</p>`));
         article.append(articleRight);
         articleList.append(article);
     });
+}
+
+function pad(input) {
+    if (input > 9) return new String(input);
+    return `0${input}`;
 }
 
 // function randInt(min, max) {
