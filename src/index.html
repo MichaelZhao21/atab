@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="css/app.css">
         <link rel="stylesheet" href="css/news.css">
         <link rel="stylesheet" href="css/time.css">
-
+        <link rel="stylesheet" href="css/notes.css">
     </head>
 
     <body>
@@ -29,13 +29,19 @@
                 <p class="date"></p>
             </div>
             <div id="button-container">
-                <button class="action-button section">Links</button>
-                <button class="action-button section">Notes</button>
-                <button class="action-button section">Settings</button>
+                <button id="links-button" class="action-button section">Links</button>
+                <button id="notes-button" class="action-button section">Notes</button>
+                <button id="settings-button" class="action-button section">Settings</button>
             </div>
-            <div id="text-box" class="section"></div>
+            <div id="notes-box" class="section">
+                <div id="notes-text" class="notes-text links">hi</div>
+                <div id="notes-button-container">
+                    <button id="nb-left" class="notes-button left">Cancel</button>
+                    <button id="nb-right" class="notes-button right">Save</button>
+                </div>
+            </div>
             <div id="news" class="section">
-                <div id="news-text">Loading...</div>
+                <div id="news-text"><span class="loading">Loading...</span></div>
                 <a id="news-credit" href="https://developer.nytimes.com">Data provided by The New York Times</a>
             </div>
         </div>

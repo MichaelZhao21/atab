@@ -23,7 +23,7 @@ a:hover {
     color: #ffe6a7;
 }
 
-p, a, h1, h2 {
+p, a, h1, h2, button, textarea, div {
     font-family: 'Inconsolata', sans-serif;
 }
 
@@ -33,16 +33,17 @@ p, a, h1, h2 {
     margin: 10vh 20vw;
 
     display: grid;
-    grid-template-columns: 1fr minmax(0, 1fr);
-    grid-template-rows: 25fr 5fr 70fr;
-    gap: 1rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: 3fr calc(1.25rem + 2px) minmax(0, 10fr);
+    column-gap: 0.75rem;
+    row-gap: 0.5rem;
 }
 
 #button-container {
     grid-row-start: 2;
 }
 
-#text-box {
+#notes-box {
     grid-row-start: 3;
 }
 
@@ -73,3 +74,11 @@ p, a, h1, h2 {
     background-color: #00000019;
 }
 
+.loading {
+    color: #aaa;
+    font-size: 0.75rem;
+}
+
+.hidden {
+    display: none;
+}

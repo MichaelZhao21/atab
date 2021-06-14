@@ -1,0 +1,82 @@
+#button-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem
+}
+
+.action-button {
+    padding: 0.25rem;
+    font-size: 0.6rem;
+    line-height: 0.75rem;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.action-button:hover {
+    background-color: #ffffff7f;
+}
+
+#notes-box {
+    display: grid;
+    grid-template-rows: 1fr 1.5rem;
+}
+
+#notes-text {
+    height: 100%;
+    width: 100%;
+}
+
+.notes-text.links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+}
+
+#notes-button-container {
+    width: 100%;
+    height: 1rem;
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.notes-button {
+    margin: 0 0.25rem;
+    border: none;
+    border-bottom: 1px solid #aaa;
+    
+    font-size: 0.75rem;
+    background-color: transparent;
+    color: #aaa;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.notes-button:hover {
+    border-color: #fff;
+    color: #fff;
+}
+
+#notes-text-edit {
+	width: calc(100% - 0.5rem);
+	height: calc(100% - 0.5rem);
+	padding: 0.25rem;
+
+    background: transparent;
+	color: white;
+}
+
+.notes-link {
+    width: 100%;
+    margin: 0.1rem 0;
+    display: block;
+    color: #bbb;
+    text-decoration: underline;
+    text-align: center;
+}
+
+.notes-link:hover {
+    color: white;
+}
