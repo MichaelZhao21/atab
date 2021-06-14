@@ -15,7 +15,7 @@ $(document).ready(async () => {
 
 async function setBackground() {
     // Retrieve the background from the local storage
-    const savedBackground = await browser.storage.local.get('background');
+    const savedBackground = await browser.storage.local.get(['background', 'name', 'link']);
 
     // If not saved, get a new background or else set the bkgd to the saved image
     if (savedBackground.background === undefined) {
@@ -23,6 +23,8 @@ async function setBackground() {
         return;
     }
     $('#background-image').attr('src', savedBackground.background);
+    $('#credits-author').attr('href', savedBackground.link);
+    $('#credits-author').text(savedBackground.name);
 }
 
 async function getAndSaveBackground() {
@@ -31,6 +33,8 @@ async function getAndSaveBackground() {
         d.json()
     );
     $('#background-image').attr('src', newBackground.imageUrl);
+    $('#credits-author').attr('href', newBackground.userLink);
+    $('#credits-author').text(newBackground.userName);
 
     // Save the image to local storage
     let img = new Image();
@@ -42,12 +46,16 @@ async function getAndSaveBackground() {
     img.onload = () => {
         imgContext.drawImage(img, 0, 0, window.innerWidth, window.innerHeight);
         const imgAsUrl = imgCanvas.toDataURL('image/png');
-        browser.storage.local.set({ background: imgAsUrl });
+        browser.storage.local.set({
+            background: imgAsUrl,
+            name: newBackground.userName,
+            link: newBackground.userLink,
+        });
     };
 }
 
 async function newBackground() {
-    console.log('wfgwef')
+    console.log('wfgwef');
     await browser.storage.local.remove('background');
     getAndSaveBackground();
 }
@@ -155,7 +163,6 @@ async function loadSettings() {
             `<button id="new-background-button" class="settings-button">New Random Background</button>`
         )
     );
-    $('#new-background-button').click(newBackground.bind(this));
 }
 
 function handleAction(left = true) {

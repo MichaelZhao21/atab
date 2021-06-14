@@ -74,6 +74,24 @@ p, a, h1, h2, button, textarea, div {
     background-color: #00000019;
 }
 
+#background-credits {
+	position: absolute;
+	bottom: 0.5rem;
+	right: 0.5rem;
+	font-size: 0.6rem;
+	color: #aaa;
+	background-color: #2121217f;
+	padding: 0.25rem;
+}
+
+#background-credits > a {
+    color: white;
+}
+
+#background-credits > a:hover {
+    color: #ffc329;
+}
+
 .loading {
     color: #aaa;
     font-size: 0.75rem;
