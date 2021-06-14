@@ -15,34 +15,28 @@
 
         <link rel="stylesheet" href="css/app.css">
         <link rel="stylesheet" href="css/news.css">
-        <link rel="stylesheet" href="css/todo.css">
         <link rel="stylesheet" href="css/time.css">
 
     </head>
 
     <body>
+        <div id="background-image-cover"></div>
+        <img id="background-image" src="" alt="background" />
         <noscript>You need to enable JavaScript to run this app.</noscript>
         <div class="app">
-            <div class="app-vert">
-                <div class="todo app-left section">
-                    <div class="todo-button-list">
-                        <button class="todo-button sort">
-                            <span class="todo-sort">SORT</span>
-                            <span class="todo-sort-method" id="sorting">PRIORITY</span>
-                        </button>
-                        <button class="todo-button task-count">
-                            <span class="todo-task-count">TASKS</span>
-                            <span class="todo-task-count-number" id="task-count">00000</span>
-                        </button>
-                    </div>
-                    <div class="todo-list" id="todo"></div>
-                    <input class="todo-cmd" id="cmd" type="text">
-                </div>
-                <div class="time section">
-                    <p class="time-time">00:00:00 am</p>
-                    <p class="time-date"></p>
-                </div>
-                <div class="news section">Loading...</div>
+            <div id="time" class="section">
+                <p class="time">00:00:00 am</p>
+                <p class="date"></p>
+            </div>
+            <div id="button-container">
+                <button class="action-button section">Links</button>
+                <button class="action-button section">Notes</button>
+                <button class="action-button section">Settings</button>
+            </div>
+            <div id="text-box" class="section"></div>
+            <div id="news" class="section">
+                <div id="news-text">Loading...</div>
+                <a id="news-credit" href="https://developer.nytimes.com">Data provided by The New York Times</a>
             </div>
         </div>
     </body>
