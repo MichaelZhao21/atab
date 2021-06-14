@@ -128,10 +128,11 @@ async function loadLinks() {
     // Each link line should be [link url] [link name]
     let notesRef = $('#notes-text');
     linkRows.forEach((line) => {
-        let splitLine = line.split(' ');
+        let splitLine = line.trim().split(' ');
         const url = splitLine[0];
-        const name = line.substring(url.length + 1);
-        notesRef.append($(`<a href=${url} class="notes-link">${name}</a>`));
+        const color = splitLine[1];
+        const name = line.substring(url.length + color.length + 2);
+        notesRef.append($(`<a href=${url} class="notes-link" style="color:#${color}">${name}</a>`));
     });
 }
 
