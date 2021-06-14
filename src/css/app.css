@@ -23,13 +23,17 @@ a:hover {
     color: #ffe6a7;
 }
 
+p, a, h1, h2 {
+    font-family: 'Inconsolata', sans-serif;
+}
+
 .app {
     width: calc(100% - 40vw);
     height: calc(100% - 20vh);
     margin: 10vh 20vw;
 
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr minmax(0, 1fr);
     grid-template-rows: 25fr 5fr 70fr;
     gap: 1rem;
 }

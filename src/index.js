@@ -5,8 +5,12 @@ $(document).ready(async () => {
 });
 
 /* BACKGROUND */
+
 async function setBackground() {
+    // Retrieve the background from the local storage
     const savedBackground = await browser.storage.local.get('background');
+    
+    // If not saved, get a new background or else set the bkgd to the saved image
     if (savedBackground.background === undefined) {
         getAndSaveBackground();
         return;
@@ -15,6 +19,7 @@ async function setBackground() {
 }
 
 async function getAndSaveBackground() {
+    // Fetch and set the background
     const newBackground = await fetch('https://api.michaelzhao.xyz/background/random').then((d) =>
         d.json()
     );
@@ -54,7 +59,7 @@ function setTime() {
 
 async function writeNews() {
     const news = await fetch('https://api.michaelzhao.xyz/news').then((d) => d.json());
-    let articleList = $('#news');
+    let articleList = $('#news-text');
     articleList.empty();
     news.results.forEach((n, i) => {
         let subtitle = n.abstract;
