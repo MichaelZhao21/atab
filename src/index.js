@@ -112,13 +112,12 @@ async function loadLinks() {
 
     // Load data
     const data = await browser.storage.sync.get('links');
-    const links = data.links;
+    let links = data.links;
 
     // If no links, write default message
     if (links === undefined || links === '') {
-        $('#notes-text').html('<span class="loading">Press "edit" to add some links!</span>');
-        browser.storage.sync.set({ links: '' });
-        return;
+        links = 'https://example.com 83e1ff click edit to add links!\n[href] [color] [name]';
+        browser.storage.sync.set({ links });
     }
 
     // Split links by line
