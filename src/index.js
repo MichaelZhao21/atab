@@ -3,6 +3,7 @@ $(document).ready(async () => {
     startTime();
     writeNews();
     loadLinks();
+    changeUI('links');
 
     $('#links-button').click(switchSection.bind(this, 'links'));
     $('#notes-button').click(switchSection.bind(this, 'notes'));
@@ -54,8 +55,7 @@ async function getAndSaveBackground() {
     };
 }
 
-async function newBackground() {
-    console.log('wfgwef');
+async function fetchNewBackground() {
     await browser.storage.local.remove('background');
     getAndSaveBackground();
 }
@@ -84,11 +84,29 @@ async function writeNews() {
     news.results.forEach((n, i) => {
         let subtitle = n.abstract;
         if (subtitle === '') subtitle = n.byline;
-        let article = $(`<a class="article" href="${n.url}"></a>`);
-        article.append($(`<p class="article-number">${pad(i + 1)}</p>`));
-        let articleRight = $(`<div class="article-right"></div>`);
-        articleRight.append($(`<p class="article-title">${n.title}</p>`));
-        articleRight.append($(`<p class="article-subtitle">${subtitle}</p>`));
+
+        let article = $('<a>');
+        article.addClass('article');
+        article.attr('href', n.url);
+
+        let articleNumber = $('<p>');
+        articleNumber.addClass('article-number');
+        articleNumber.text(pad(i + 1));
+        article.append(articleNumber);
+
+        let articleRight = $('<div>');
+        articleRight.addClass('article-right');
+
+        let articleTitle = $('<p>');
+        articleTitle.addClass('article-title');
+        articleTitle.text(n.title);
+        articleRight.append(articleTitle);
+
+        let articleSubtitle = $('<p>');
+        articleSubtitle.addClass('article-subtitle');
+        articleSubtitle.text(subtitle);
+        articleRight.append(articleSubtitle);
+
         article.append(articleRight);
         articleList.append(article);
     });
@@ -97,19 +115,43 @@ async function writeNews() {
 /* ==================== NOTES SECTION ==================== */
 
 function switchSection(section) {
-    $('#nb-info').text('');
+    $('#nb-info').empty();
     $('#notes-text').attr('class', `notes-text ${section}`);
+    changeUI(section);
     if (section === 'links') loadLinks();
     else if (section === 'notes') loadNotes();
     else loadSettings();
 }
 
-async function loadLinks() {
-    // Change button messages and clear text container
-    $('#nb-left').addClass('hidden');
-    $('#nb-right').text('Edit');
-    $('#notes-text').text('');
+function changeUI(section) {
+    $('#nb-left').removeClass('hidden');
+    if (section === 'links') {
+        $('#notes-text').empty();
+        $('#nb-left').addClass('hidden');
+        $('#nb-right').text('Edit');
+    } else if (section === 'links-edit') {
+        createEditArea();
+        $('#nb-left').text('Cancel');
+        $('#nb-right').text('Save');
+    } else if (section === 'notes') {
+        createEditArea();
+        $('#nb-left').text('Revert');
+        $('#nb-right').text('Save');
+    } else {
+        $('#notes-text').empty();
+        $('#nb-left').addClass('hidden');
+        $('#nb-right').text('Save text fields');
+    }
+}
 
+function createEditArea() {
+    let area = $('<textarea>');
+    area.attr('id', 'notes-text-edit');
+    $('#notes-text').empty();
+    $('#notes-text').append(area);
+}
+
+async function loadLinks() {
     // Load data
     const data = await browser.storage.sync.get('links');
     let links = data.links;
@@ -131,17 +173,17 @@ async function loadLinks() {
         const url = splitLine[0];
         const color = splitLine[1];
         const name = line.substring(url.length + color.length + 2);
-        notesRef.append($(`<a href=${url} class="notes-link" style="color:#${color}">${name}</a>`));
+
+        let currLine = $('<a>');
+        currLine.addClass('notes-link');
+        currLine.attr('href', url);
+        currLine.attr('style', `color:#${color}`);
+        currLine.text(name);
+        notesRef.append(currLine);
     });
 }
 
 async function loadNotes() {
-    // Change button messages and clear text container
-    $('#nb-left').removeClass('hidden');
-    $('#nb-left').text('Revert');
-    $('#nb-right').text('Save');
-    $('#notes-text').html($('<textarea id="notes-text-edit"></textarea>'));
-
     // Load data
     const data = await browser.storage.sync.get('notes');
     const notes = data.notes;
@@ -154,25 +196,22 @@ async function loadNotes() {
 }
 
 async function loadSettings() {
-    // Change button messages and clear text container
-    $('#nb-left').addClass('hidden');
-    $('#nb-right').text('Save text fields');
-    $('#notes-text').text('');
-    $('#notes-text').append(
-        $(
-            `<button id="new-background-button" class="settings-button">New Random Background</button>`
-        )
-    );
+    let newBkgdButton = $('<button>');
+    newBkgdButton.addClass('settings-button');
+    newBkgdButton.attr('id', 'new-background-button');
+    newBkgdButton.text('New Random Background');
+    $('#notes-text').append(newBkgdButton);
+    newBkgdButton.click(fetchNewBackground.bind(this));
 }
 
 function handleAction(left = true) {
     const textRef = $('#notes-text');
-    console.log(textRef);
     if (textRef.hasClass('links')) {
         if ($('#nb-right').text().toLowerCase() === 'edit') editLinks();
         else {
             if (left) loadLinks();
             else saveLinks();
+            changeUI('links');
         }
     } else if (textRef.hasClass('notes')) {
         if (left) {
@@ -186,13 +225,9 @@ function handleAction(left = true) {
 async function editLinks() {
     const data = await browser.storage.sync.get('links');
     const links = data.links;
-    console.log(links);
 
-    $('#notes-text').html($('<textarea id="notes-text-edit"></textarea>'));
+    changeUI('links-edit');
     $('#notes-text-edit').val(links);
-    $('#nb-left').removeClass('hidden');
-    $('#nb-left').text('Cancel');
-    $('#nb-right').text('Save');
 }
 
 async function saveLinks() {

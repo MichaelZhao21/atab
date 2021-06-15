@@ -12,4 +12,9 @@ There is no need to build the app! Simply follow [this guide](https://extensionw
 
 # Build
 
-Again, no need to explicitly *build*; simply run `build.sh` to bundle all files into a zip file :DD
+Again, no need to explicitly _build_; simply run `build.sh` to bundle all files into a zip file :DD
+
+# Library Versions
+
+- jquery: [3.6.0](https://github.com/jquery/jquery/releases/tag/3.6.0)
+- dayjs: [1.10.5](https://github.com/iamkun/dayjs/releases/tag/v1.10.5)
