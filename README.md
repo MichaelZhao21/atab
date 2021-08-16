@@ -1,20 +1,23 @@
 # aTab
 
-This is an extension that will replace your new tab into a more productive and useful interface! The interface features an aesthetic background, a news feed (from NYT's API), a place to jot down quick notes that can sync across devices, and a nice date/time display.
+This is an extension that will replace your new tab into a more productive and useful interface! The interface features an aesthetic dark material theme, a news feed (from the [News API](https://newsapi.org/)), a list of customizable links on a sidebar, a place to jot down quick notes that can sync across devices, and a nice date/time display.
 
 ## Install the Extension
 
-Check in the [releases tab](https://github.com/MichaelZhao21/task-tab/releases) and download `task-tab-X.X.xpi` (where X.X is the version) and follow [these instructions](https://extensionworkshop.com/documentation/publish/distribute-sideloading/) to add the plugin to firefox!
+Check in the [releases tab](https://github.com/MichaelZhao21/task-tab/releases) and download `task-tab-X.X.xpi` (where X.X is the version) and follow [these instructions](https://extensionworkshop.com/documentation/publish/distribute-sideloading/) to add the plugin to firefox! The goal is to eventually get this on the mozilla addons store :))
 
 ## Development
 
-There is no need to build the app! Simply follow [this guide](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/) to install a temporary add-on and you may edit code to your heart's content! There are certain limitations that you must be aware of when working with an extension! You cannot use any templating engine, which rules out a lot of libraries. There are workarounds, but for my simple app it was more of a hassle than it was worth. That means a lot of the UI modifications I do are using jquery (I know, pretty archaic ahah), but I still try to stick to modern coding paradigms most of the time.
+To install the app, run `yarn install`. This should install all dependencies and allow you to run the dev or build scripts.
+
+`yarn start` runs webpack with a file watcher, which means that all changes will trigger a rebuild. Follow [this guide](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/) to install a temporary add-on (select the `manifest.json` file). When webpack rebuilds the app, simply refresh your new tab page and the changes that you have made should show up.
+
+There are certain limitations that you must be aware of when working with an extension! You cannot use any templating engine, which rules out a lot of libraries. There are workarounds, but for my simple app it was more of a hassle than it was worth. That means a lot of the UI modifications I do are using jquery (I know, pretty archaic haha), but I still try to stick to modern coding paradigms and file splitting.
 
 # Build
 
-Again, no need to explicitly _build_; simply run `build.sh` to bundle all files into a zip file :DD
+To build the extension, run `yarn build`. This command should run the production build of webpack and zip the output files into `atab.zip`. You can upload this file to the firefox store and use it!
 
-# Library Versions
+# Icons
 
-- jquery: [3.6.0](https://github.com/jquery/jquery/releases/tag/3.6.0)
-- dayjs: [1.10.5](https://github.com/iamkun/dayjs/releases/tag/v1.10.5)
+All icons used in this app are from [Google Material Icons](https://fonts.google.com/icons). The list of icon names that is stored in `src/icons.json` are from [github/google: material-design-icons/font/MaterialIconsOutlined-Regular.codepoints](https://github.com/google/material-design-icons/blob/master/font/MaterialIconsOutlined-Regular.codepoints).

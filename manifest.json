@@ -1,9 +1,9 @@
 {
     "manifest_version": 2,
     "name": "aTab",
-    "version": "1.1",
+    "version": "1.2",
     "author": "Michael Zhao",
-    "description": "An extension that will replace your new tab with a more productive and useful interface!",
+    "description": "An extension that will replace your new tab with a more productive, aesthetic, and useful interface!",
     
     "icons": {
         "48": "res/48.png",

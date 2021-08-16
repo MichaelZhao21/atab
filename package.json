@@ -1,12 +1,12 @@
 {
     "name": "atab",
-    "description": "An extension that will replace your new tab into a more productive, aesthetic, and useful interface! ",
+    "description": "An extension that will replace your new tab with a more productive, aesthetic, and useful interface! ",
     "version": "1.0.0",
     "private": true,
     "author": "Michael Zhao <michaelzhao314@gmail.com> (https://michaelzhao.xyz/)",
     "scripts": {
         "start": "webpack --config dev-webpack.config.js",
-        "build": "webpack"
+        "build": "webpack && ./build.sh"
     },
     "dependencies": {
         "dayjs": "^1.10.6",
