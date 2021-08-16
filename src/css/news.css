@@ -1,0 +1,52 @@
+.article {
+    width: 100%;
+    padding: 0.25rem;
+
+    display: flex;
+    flex-direction: row;
+    font-size: 0.8rem;
+
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    font-weight: 400;
+    font-size: 0.65rem;
+    transition: 0.2s;
+}
+
+.article:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.article-number {
+    margin: 0;
+    padding: 0;
+    flex-basis: 1.25rem;
+    flex-shrink: 0;
+
+    font-weight: 400;
+    font-size: 0.6rem;
+    color: var(--start);
+}
+
+.article-right,
+.article-title,
+.article-subtitle {
+    margin: 0;
+}
+
+.article-title {
+    font-weight: 500;
+    font-size: 0.6rem;
+    color: #ddd;
+}
+
+.article-subtitle {
+    width: initial;
+    margin-top: 0.1rem;
+    flex-grow: 0;
+
+    font-weight: 400;
+    font-size: 0.5rem;
+    color: #aaa;
+}
