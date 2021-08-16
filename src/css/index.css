@@ -80,14 +80,14 @@ h2 {
 #content-wrapper {
     margin: 0.5rem 1rem;
     padding: 0.5rem;
-    
+
     flex-grow: 1;
     overflow: hidden;
     border-radius: 0.5rem;
-    
+
     display: flex;
     flex-direction: column;
-    background-color:rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 #content-header {
@@ -122,9 +122,9 @@ h2 {
 
 .material-icons-outlined:hover {
     color: white;
-    filter: drop-shadow(0 0 1px #777)
+    filter: drop-shadow(0 0 1px #777);
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }

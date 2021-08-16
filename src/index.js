@@ -2,6 +2,7 @@ import $ from 'jquery';
 import { writeNews } from './news';
 import { writeNotes } from './notes';
 import { startTime } from './time';
+import { drawSmile } from './smile';
 import './css/index.css';
 
 const titleMap = { news: 'News', notes: 'Notes', smile: ':)', settings: 'Settings' };
@@ -10,6 +11,7 @@ $(async () => {
     startTime();
     writeNews();
     writeNotes();
+    drawSmile();
 
     $('#article-button').on('click', handleClick.bind(this, 'news'));
     $('#edit-button').on('click', handleClick.bind(this, 'notes'));

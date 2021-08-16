@@ -1,0 +1,13 @@
+#smile-wrapper {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#main-icon {
+    font-size: 10rem;
+    user-select: none;
+}
