@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <meta charset="utf-8" />
         <link rel="icon" href="../../res/favicon.ico" />
@@ -8,47 +7,30 @@
         <meta name="theme-color" content="#b3f1ff" />
         <meta name="description" content="A more productive and aesthetic new tab!" />
         <title>New Tab!</title>
-
-        <script src="../lib/dayjs.min.js"></script>
-        <script src="../lib/jquery.min.js"></script>
-        <script src="index.js"></script>
-
-        <link rel="stylesheet" href="css/app.css">
-        <link rel="stylesheet" href="css/news.css">
-        <link rel="stylesheet" href="css/time.css">
-        <link rel="stylesheet" href="css/notes.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+            rel="stylesheet"
+        />
+        <script src="./index.js"></script>
     </head>
 
     <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
-        <div id="background-image-cover"></div>
-        <img id="background-image" src="" alt="background" />
-        <div id="background-credits">
-            Photo by <a id="credits-author"></a> on <a href="https://unsplash.com/">Unsplash</a>
-        </div>
-        <div class="app">
-            <div id="time" class="section">
-                <p class="time">00:00:00 am</p>
-                <p class="date"></p>
-            </div>
-            <div id="button-container">
-                <button id="links-button" class="action-button section">Links</button>
-                <button id="notes-button" class="action-button section">Notes</button>
-                <button id="settings-button" class="action-button section">Settings</button>
-            </div>
-            <div id="notes-box" class="section">
-                <div id="notes-text" class="notes-text links"></div>
-                <div id="notes-button-container">
-                    <div id="nb-info"></div>
-                    <button id="nb-left" class="notes-button left">Cancel</button>
-                    <button id="nb-right" class="notes-button right">Save</button>
+        <div id="app">
+            <div id="sidebar"></div>
+            <div id="body">
+                <div id="datetime-container">
+                    <h1 id="time">00:00:00 am</h1>
+                    <h2 id="date">Someday, Month 00, 0000</h2>
                 </div>
-            </div>
-            <div id="news" class="section">
-                <div id="news-text"><span class="loading">Loading...</span></div>
-                <a id="news-credit" href="https://developer.nytimes.com">Data provided by The New York Times</a>
+                <div id="content-wrapper">
+                    <div id="content">
+                        <div id="news-text"><span class="loading">Loading...</span></div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>
-
 </html>

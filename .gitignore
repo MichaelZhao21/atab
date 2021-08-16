@@ -1,5 +1,5 @@
-**/yarn-error.log
-**/.env
-**/node_modules
-**/.serverless
+node_modules
+dist
+yarn-error.log
+.env
 *.zip

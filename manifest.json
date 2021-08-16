@@ -11,10 +11,10 @@
     },
 
     "chrome_settings_overrides": {
-		"homepage": "src/index.html"
+		"homepage": "dist/index.html"
 	},
 	"chrome_url_overrides": {
-		"newtab": "src/index.html"
+		"newtab": "dist/index.html"
 	},
 
     "permissions": ["<all_urls>", "storage"],
