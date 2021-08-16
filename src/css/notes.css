@@ -1,0 +1,60 @@
+#notes-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#notes-edit {
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
+}
+
+textarea {
+    resize: none;
+    margin: 0;
+    padding: 4px;
+    border: 0.5px solid #aaa;
+    border-radius: 2px;
+
+    background-color: transparent;
+    color: #ddd;
+    font-size: 0.5rem;
+    font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+    transition: 0.2s;
+}
+
+textarea:focus {
+    border-color: var(--end);
+    outline: none;
+}
+
+#save-button {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    border-radius: 12px;
+    border: none;
+
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#save-button:hover {
+    box-shadow: 0 0 2px #aaaaaa44;
+    background-color: var(--end);
+}
+
+#save-button:hover > #save-icon {
+    color: #000000aa;
+}
+
+#save-icon {
+    margin: 0;
+    padding: 0;
+    font-size: 0.75rem;
+    filter: none !important;
+}

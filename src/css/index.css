@@ -13,6 +13,7 @@ body {
     height: 100%;
     width: 100%;
     margin: 0;
+    color: #aaa;
     background-color: #201f27;
     font-family: 'Roboto', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
@@ -80,8 +81,7 @@ h2 {
     margin: 0.5rem 1rem;
     padding: 0.5rem;
     
-    flex-grow: 0;
-    flex-shrink: 1;
+    flex-grow: 1;
     overflow: hidden;
     border-radius: 0.5rem;
     
@@ -92,8 +92,8 @@ h2 {
 
 #content-header {
     height: 20px;
-    margin-bottom: 0.25rem;
-    padding-left: 0.25rem;
+    margin-bottom: 4px;
+    padding-left: 4px;
     flex-shrink: 0;
 
     display: flex;
@@ -101,10 +101,7 @@ h2 {
 }
 
 #content {
-    overflow-x: hidden;
-    overflow-y: scroll;
-    scrollbar-color: #555#333;
-    scrollbar-width: thin;
+    height: calc(100% - 24px);
 }
 
 #header-name {
@@ -126,4 +123,8 @@ h2 {
 .material-icons-outlined:hover {
     color: white;
     filter: drop-shadow(0 0 1px #777)
+}
+
+.hidden {
+    display: none;
 }

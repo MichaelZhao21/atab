@@ -4,8 +4,9 @@ import './css/news.css';
 
 export async function writeNews() {
     const news = await fetch('https://api.michaelzhao.xyz/news').then((d) => d.json());
-    let articleList = $('#news-text');
-    articleList.empty();
+    let wrapper = $('#news-wrapper');
+    let articleList = $('<div>');
+    articleList.attr('id', 'news-scroll');
 
     news.articles.forEach((n, i) => {
         let subtitle = n.description || n.content || n.author || '';
@@ -35,4 +36,7 @@ export async function writeNews() {
         article.append(articleRight);
         articleList.append(article);
     });
+    
+    wrapper.empty();
+    wrapper.append(articleList);
 }
