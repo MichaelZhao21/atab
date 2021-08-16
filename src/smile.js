@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import icons from './icons.json';
+import icons from './files/icons.json';
 import { randInt } from './util';
 import './css/smile.css';
 
