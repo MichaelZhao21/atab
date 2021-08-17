@@ -29,3 +29,7 @@ function setColor(id) {
     const color = colors.find((c) => c.id === id);
     $('body').css('--start', color.start).css('--end', color.end);
 }
+
+export async function createSidebar() {
+    
+}

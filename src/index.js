@@ -3,8 +3,9 @@ import { writeNews } from './news';
 import { writeNotes } from './notes';
 import { startTime } from './time';
 import { drawSmile } from './smile';
-import { createSettings } from './settings';
+import { createSettings, createSidebar } from './settings';
 import './css/index.css';
+import './css/sidebar.css';
 
 const titleMap = { news: 'News', notes: 'Notes', smile: ':)', settings: 'Settings' };
 
@@ -14,6 +15,7 @@ $(async () => {
     writeNotes();
     drawSmile();
     createSettings();
+    createSidebar();
 
     $('#article-button').on('click', handleClick.bind(this, 'news'));
     $('#edit-button').on('click', handleClick.bind(this, 'notes'));
