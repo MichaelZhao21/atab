@@ -84,9 +84,9 @@ h2 {
 }
 
 #content-header {
-    height: 20px;
-    margin-bottom: 4px;
-    padding-left: 4px;
+    height: 1.25rem;
+    margin-bottom: 0.25rem;
+    padding-left: 0.25rem;
     flex-shrink: 0;
 
     display: flex;
@@ -94,7 +94,7 @@ h2 {
 }
 
 #content {
-    height: calc(100% - 24px);
+    height: calc(100% - 1.5rem);
 }
 
 #header-name {

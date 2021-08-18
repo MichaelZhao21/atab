@@ -5,16 +5,16 @@
 }
 
 #notes-edit {
-    width: calc(100% - 8px);
-    height: calc(100% - 8px);
+    width: calc(100% - 0.5rem);
+    height: calc(100% - 0.5rem);
 }
 
 textarea {
     resize: none;
     margin: 0;
-    padding: 4px;
+    padding: 0.25rem;
     border: 0.5px solid #aaa;
-    border-radius: 2px;
+    border-radius: 0.125rem;
 
     background-color: transparent;
     color: #ddd;
@@ -29,13 +29,13 @@ textarea:focus {
 }
 
 #save-button {
-    width: 24px;
-    height: 24px;
+    width: 1.5rem;
+    height: 1.5rem;
     padding: 0;
     position: absolute;
-    bottom: 12px;
-    right: 12px;
-    border-radius: 12px;
+    bottom: 0.75rem;
+    right: 0.75rem;
+    border-radius: 0.75rem;
     border: none;
 
     background-color: rgba(255, 255, 255, 0.1);
