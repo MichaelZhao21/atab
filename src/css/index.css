@@ -32,13 +32,6 @@ h1 {
     color: #212121;
 }
 
-h2 {
-    font-size: 1rem;
-    font-weight: 400;
-    margin: 0;
-    color: #aaa;
-}
-
 @supports (background-clip: text) {
     h1 {
         /* Apply gradient to text */
@@ -48,6 +41,66 @@ h2 {
         -moz-text-fill-color: transparent;
         -webkit-text-fill-color: transparent;
     }
+}
+
+h2 {
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0;
+    color: #aaa;
+}
+
+a {
+    text-decoration: none;
+    color: var(--start);
+    transition: 0.2s;
+}
+
+a:hover {
+    filter: brightness(150%);
+}
+
+textarea {
+    resize: none;
+    margin: 0;
+    padding: 0.25rem;
+    border: 0.5px solid #aaa;
+    border-radius: 0.125rem;
+    outline: none;
+
+    background-color: transparent;
+    color: #ddd;
+    font-size: 0.5rem;
+    font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+    transition: 0.2s;
+}
+
+textarea:focus {
+    border-color: var(--end);
+}
+
+button {
+    margin: 0;
+    padding: 0.25rem;
+    border: 0.5px solid #aaa;
+    border-radius: 0.125rem;
+    outline: none;
+
+    background-color: transparent;
+    color: #ddd;
+    font-size: 0.5rem;
+    font-family: 'Roboto', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    border-color: var(--end);
+}
+
+button:focus {
+    border-color: var(--end);
+    box-shadow: 0 0 3px #aaaaaaaa;
 }
 
 #app {

@@ -4,13 +4,14 @@
 
 #form-wrapper {
     height: 100%;
-    margin: 0 3rem;
     overflow-x: hidden;
     overflow-y: auto;
 
     display: flex;
     flex-direction: column;
     align-items: center;
+    scrollbar-color: #555#333;
+    scrollbar-width: thin;
 }
 
 .color-option {
@@ -27,4 +28,10 @@
 
 .active-color, .color-option:hover {
     outline-color: white;
+}
+
+#links-edit {
+    height: 10rem;
+    width: calc(100% - 2rem);
+    flex-shrink: 0;
 }
