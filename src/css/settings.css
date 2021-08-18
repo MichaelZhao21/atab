@@ -1,5 +1,13 @@
+#settings-wrapper {
+    height: 100%;
+}
+
 #form-wrapper {
+    height: 100%;
     margin: 0 3rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -11,6 +19,7 @@
     margin: 0.5rem;
     border-radius: 0.75rem;
     outline: 1px solid transparent;
+    flex-shrink: 0;
     background: linear-gradient(135deg, var(--start), var(--start) 25%, var(--end) 75%, var(--end));
     cursor: pointer;
     transition: 0.3s;

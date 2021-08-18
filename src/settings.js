@@ -17,13 +17,15 @@ export async function createSettings() {
             .css('--end', c.end)
     );
 
-    const scaleLabel = $('<p>').attr('id', 'scale-label').text('Scale (%)');
+    const scaleLabel = $('<p>').attr('id', 'scale-label').addClass('label').text('Scale (%)');
     const scale = $('<input>').attr('id', 'scale').val(prevScale).on('blur', changeScale);
+    const scaleInput = $('<div>').addClass('input-box').append([scaleLabel, scale]);
     const scaleError = $('<p>').addClass('error').attr('id', 'scale-error');
+    const spacer = $('<div>').addClass('spacer');
 
     const formWrapper = $('<div>')
         .attr('id', 'form-wrapper')
-        .append([...gradientList, scaleLabel, scale, scaleError]);
+        .append([...gradientList, spacer, scaleInput, scaleError]);
     $('#settings-wrapper').empty().append(formWrapper);
 }
 
@@ -39,7 +41,7 @@ function setColor(id) {
 }
 
 function scaleView(scale) {
-    $('html').css('font-size', `${Number(scale) / 100 * 16}px`);
+    $('html').css('font-size', `${(Number(scale) / 100) * 16}px`);
 }
 
 async function changeScale(event) {
