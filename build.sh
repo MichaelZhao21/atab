@@ -2,5 +2,5 @@
 
 echo "bundling app into zip archive..."
 rm atab.zip
-zip -r atab.zip LICENSE.md manifest.json README.md dist
+zip -r atab.zip LICENSE.md manifest.json README.md dist res
 echo "finished bundling!"
