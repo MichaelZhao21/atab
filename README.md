@@ -8,7 +8,7 @@ Check in the [releases tab](https://github.com/MichaelZhao21/task-tab/releases) 
 
 ## Development
 
-To install the app, run `yarn install`. This should install all dependencies and allow you to run the dev or build scripts.
+The app requires **Nodejs v.16+**. To install the app, run `yarn install`. This should install all dependencies and allow you to run the dev or build scripts.
 
 `yarn start` runs webpack with a file watcher, which means that all changes will trigger a rebuild. Follow [this guide](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/) to install a temporary add-on (select the `manifest.json` file). When webpack rebuilds the app, simply refresh your new tab page and the changes that you have made should show up.
 
@@ -16,7 +16,7 @@ There are certain limitations that you must be aware of when working with an ext
 
 # Build
 
-To build the extension, run `yarn build`. This command should run the production build of webpack and zip the output files into `atab.zip`. You can upload this file to the firefox store and use it!
+To build the extension, run `yarn build`. This command should run the production build of webpack and zip the output files into `atab.zip`, which is the version that is uploaded to the mozilla extensions workshop.
 
 # Icons
 
