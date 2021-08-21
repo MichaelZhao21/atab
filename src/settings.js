@@ -4,9 +4,10 @@ import icons from './files/icons.json';
 import './css/settings.css';
 
 export async function createSettings() {
-    const data = await browser.storage.sync.get(['color', 'scale', 'links']);
+    const data = await browser.storage.sync.get(['color', 'links']);
+    const localData = await browser.storage.local.get('scale');
     const prevId = data.color ? data.color : 0;
-    const prevScale = data.scale ? data.scale : 100;
+    const prevScale = localData.scale ? localData.scale : 100;
     const prevLinks = data.links
         ? data.links
         : 'https://google.com language\nhttps://youtube.com play_circle_outline\nhttps://drive.google.com add_to_drive';
