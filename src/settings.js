@@ -80,7 +80,7 @@ async function changeScale(event) {
     $('#scale-error').empty();
     if (isNaN(Number(event.target.value))) $('#scale-error').text('Please enter a number');
     else {
-        browser.storage.sync.set({ scale: event.target.value });
+        browser.storage.local.set({ scale: event.target.value });
         scaleView(event.target.value);
     }
 }
