@@ -21,3 +21,7 @@ To build the extension, run `yarn build`. This command should run the production
 # Icons
 
 All icons used in this app are from [Google Material Icons](https://fonts.google.com/icons). The list of icon names that is stored in `src/icons.json` are from [github/google: material-design-icons/font/MaterialIconsOutlined-Regular.codepoints](https://github.com/google/material-design-icons/blob/master/font/MaterialIconsOutlined-Regular.codepoints).
+
+# Screenshots
+
+![screenshot of the new tab homepage](res/home.webp)
