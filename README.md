@@ -8,7 +8,7 @@ This is an extension that will replace your new tab into a more productive and u
 
 ## Install the Extension
 
-Check in the [releases tab](https://github.com/MichaelZhao21/task-tab/releases) and download `task-tab-X.X.xpi` (where X.X is the version) and follow [these instructions](https://extensionworkshop.com/documentation/publish/distribute-sideloading/) to add the plugin to firefox! The goal is to eventually get this on the mozilla addons store :))
+The extension is now on the Mozilla Extensions Workshop! Just go to [this link](https://addons.mozilla.org/en-US/firefox/addon/atab/) and install the extension :DD
 
 ## Development
 
